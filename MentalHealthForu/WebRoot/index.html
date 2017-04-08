@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>首页 - 南阳理工心理健康论坛</title>
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			.board-groups {
+				width: 80%;
+			}
+			
+			.board-title {
+				font-size: 20px;
+				color: #33a6d5;
+			}
+			
+			.board {
+				border: 1px solid;
+			}
+			
+			.board:hover {
+				cursor: pointer;
+				border-color: #33a6d5;
+			}
+			
+			.panel-body {
+				padding: 0px;
+			}
+			
+			.list-group-item:first-child {
+				border-top-left-radius: 0px;
+				border-top-right-radius: 0px;
+			}
+			
+			ul,
+			ol {
+				margin-bottom: 0px;
+			}
+			
+			.list-group {
+				margin-bottom: 0px;
+			}
+			
+			.list-group-item:hover {
+				box-shadow: 0px 0px 20px 0px #33a6d5;
+				z-index: 1;
+				cursor: pointer;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+				$.get("navbar.html", {}, function(data) {
+					$("body").prepend(data);
+				})
+				$.get("footer.html", {}, function(data) {
+					$("body").append(data);
+				})
+			});
+		</script>
+	</head>
+
+	<body>
+
+		<div class="center-block board-groups">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					精品区
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="board-title">精品文章</div>
+							<small>大半夜没事干？看看老师写的精品文章，漫漫长夜，为你排♂解♂寂♂寞</small>
+						</li>
+						<li class="list-group-item">
+							<div class="board-title">经典案例</div>
+							<small>看看以前的那些傻逼们是怎样一步一步走向灭亡的</small>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					求助区
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="board-title">求助老师</div>
+							<small>有病？问老师，老师给你来个了断！</small>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					灌水区
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="board-title">生活杂谈</div>
+							<small>瞎几把聊和撩</small>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>
