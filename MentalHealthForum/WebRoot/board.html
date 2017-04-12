@@ -3,13 +3,38 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>首页 - 南阳理工心理健康论坛</title>
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<script src="js/jquery-3.1.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
+		<title>版块 - 南阳理工心理健康论坛</title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/summernote.css" />
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/summernote.min.js" ></script>
+		<script type="text/javascript" src="js/summernote-zh-CN.min.js" ></script>
 		<style type="text/css">
 			.post-list {
 				width: 80%;
+			}
+			.container-fluid{
+				padding-left: 10%;
+				padding-right: 10%;
+			}
+			.post-list-title {
+				font-size: 24px;
+				color: #33a6d5;
+				text-shadow: 0px 0px 4px #b4c4f3;
+			}
+			
+			.table tr:hover {
+				box-shadow: 0px 0px 20px 0px #33a6d5;
+				z-index: 1;
+				cursor: pointer;
+			}
+			
+			#list-title:hover {
+				box-shadow: none;
+				z-index: 0;
+				cursor: default;
 			}
 		</style>
 		<script type="text/javascript">
@@ -20,6 +45,10 @@
 				$.get("footer.html", {}, function(data) {
 					$("body").append(data);
 				})
+				$("#new-post").summernote({
+			        height: 200,
+			        lang: 'zh-CN'
+			      });
 			});
 		</script>
 	</head>
@@ -35,6 +64,86 @@
 				</li>
 				<li class="active">求助老师</li>
 			</ol>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="panel-title post-list-title">
+						求助老师
+						<button type="button" class="btn btn-primary" style="float: right;width: 100px;" onclick="window.location.href='#new-post'">
+							发帖
+						</button>
+					</div>
+				</div>
+				<table class="table">
+					<tr id="list-title">
+						<th>帖子</th>
+						<th>回复数</th>
+						<th>最后回复时间</th>
+						<th>作者</th>
+					</tr>
+					<tr>
+						<td>老师我总是失眠怎么办 <span class="label label-success">已答复</span></td>
+						<td> <span class="badge">50</span></td>
+						<td>2017-01-01 18:01:01</td>
+						<td>某学生</td>
+					</tr>
+					<tr>
+						<td>老师我总是失眠怎么办 <span class="label label-warning">需补充信息</span></td>
+						<td> <span class="badge">50</span></td>
+						<td>2017-01-01 18:01:01</td>
+						<td>某学生</td>
+					</tr>
+					<tr>
+						<td>老师我总是失眠怎么办 </td>
+						<td> <span class="badge">50</span></td>
+						<td>2017-01-01 18:01:01</td>
+						<td>某学生</td>
+					</tr>
+					<tr>
+						<td>老师我总是失眠怎么办</td>
+						<td> <span class="badge">50</span></td>
+						<td>2017-01-01 18:01:01</td>
+						<td>某学生</td>
+					</tr>
+					<tr>
+						<td>老师我总是失眠怎么办</td>
+						<td> <span class="badge">50</span></td>
+						<td>2017-01-01 18:01:01</td>
+						<td>某学生</td>
+					</tr>
+					<tr>
+						<td>老师我总是失眠怎么办</td>
+						<td> <span class="badge">50</span></td>
+						<td>2017-01-01 18:01:01</td>
+						<td>某学生</td>
+					</tr>
+				</table>
+			</div>
+			<nav style="text-align: center;">
+				<ul class="pagination">
+					<li>
+						<a href="#">&laquo;</a>
+					</li>
+					<li class="active">
+						<a href="#">1</a>
+					</li>
+					<li>
+						<a href="#">2</a>
+					</li>
+					<li>
+						<a href="#">3</a>
+					</li>
+					<li>
+						<a href="#">4</a>
+					</li>
+					<li>
+						<a href="#">5</a>
+					</li>
+					<li>
+						<a href="#">&raquo;</a>
+					</li>
+				</ul>
+			</nav>
+			<div id="new-post"></div>
 		</div>
 	</body>
 
