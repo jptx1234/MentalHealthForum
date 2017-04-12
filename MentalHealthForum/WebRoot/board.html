@@ -3,29 +3,28 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<title>版块 - 南阳理工心理健康论坛</title>
 		<link rel="stylesheet" href="css/bootstrap.css" />
 		<link rel="stylesheet" href="css/summernote.css" />
+		<link rel="stylesheet" href="css/common.css" />
 		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="js/summernote.min.js" ></script>
-		<script type="text/javascript" src="js/summernote-zh-CN.min.js" ></script>
+		<script type="text/javascript" src="js/summernote.min.js"></script>
+		<script type="text/javascript" src="js/summernote-zh-CN.min.js"></script>
+		<script type="text/javascript" src="js/loadNavAndFooter.js" ></script>
 		<style type="text/css">
-			.post-list {
+			
+			/*.post-list {
 				width: 80%;
-			}
-			.container-fluid{
-				padding-left: 10%;
-				padding-right: 10%;
-			}
+			}*/
 			.post-list-title {
 				font-size: 24px;
 				color: #33a6d5;
 				text-shadow: 0px 0px 4px #b4c4f3;
 			}
 			
-			.table tr:hover {
+			.table > tbody > tr:hover {
 				box-shadow: 0px 0px 20px 0px #33a6d5;
 				z-index: 1;
 				cursor: pointer;
@@ -39,21 +38,43 @@
 		</style>
 		<script type="text/javascript">
 			$(function() {
-				$.get("navbar.html", {}, function(data) {
-					$("body").prepend(data);
-				})
-				$.get("footer.html", {}, function(data) {
-					$("body").append(data);
-				})
-				$("#new-post").summernote({
-			        height: 200,
-			        lang: 'zh-CN'
-			      });
+				$('.summernote').summernote({
+					fontNames: ['微软雅黑', '黑体', 'Comic Sans MS', 'Courier New'],
+					height: 200,
+					lang: 'zh-CN'
+				});
+				$("#edit-new-post-button").click(function() {
+					var btn = $(this);
+					if(($.trim(btn.text())) == "发帖"){
+						btn.text("取消发帖");
+						btn.removeClass("btn-primary");
+						btn.addClass("btn-danger");
+						$("#post-list-div").fadeOut(function(){
+							$("#new-post-div").fadeIn();
+							$("#new-post-title").focus();
+						});
+						$(".bottom-page").hide();
+					}else{
+						btn.text("发帖");
+						btn.removeClass("btn-danger");
+						btn.addClass("btn-primary");
+						$("#new-post-div").fadeOut(function(){
+							$("#post-list-div").fadeIn();
+						});
+						btn.blur();
+						$(".bottom-page").show();
+					}
+				});
+				$("#new-post-submit").click(function(){
+					var markupStr = $('#new-post').summernote('code');
+					console.log(markupStr);
+				});
 			});
 		</script>
 	</head>
 
 	<body>
+	<main>
 		<div class="center-block post-list">
 			<ol class="breadcrumb">
 				<li>
@@ -68,83 +89,100 @@
 				<div class="panel-heading">
 					<div class="panel-title post-list-title">
 						求助老师
-						<button type="button" class="btn btn-primary" style="float: right;width: 100px;" onclick="window.location.href='#new-post'">
+						<button id="edit-new-post-button" type="button" class="btn btn-primary" style="float: right;width: 100px; ">
 							发帖
 						</button>
 					</div>
 				</div>
-				<table class="table">
-					<tr id="list-title">
-						<th>帖子</th>
-						<th>回复数</th>
-						<th>最后回复时间</th>
-						<th>作者</th>
-					</tr>
-					<tr>
-						<td>老师我总是失眠怎么办 <span class="label label-success">已答复</span></td>
-						<td> <span class="badge">50</span></td>
-						<td>2017-01-01 18:01:01</td>
-						<td>某学生</td>
-					</tr>
-					<tr>
-						<td>老师我总是失眠怎么办 <span class="label label-warning">需补充信息</span></td>
-						<td> <span class="badge">50</span></td>
-						<td>2017-01-01 18:01:01</td>
-						<td>某学生</td>
-					</tr>
-					<tr>
-						<td>老师我总是失眠怎么办 </td>
-						<td> <span class="badge">50</span></td>
-						<td>2017-01-01 18:01:01</td>
-						<td>某学生</td>
-					</tr>
-					<tr>
-						<td>老师我总是失眠怎么办</td>
-						<td> <span class="badge">50</span></td>
-						<td>2017-01-01 18:01:01</td>
-						<td>某学生</td>
-					</tr>
-					<tr>
-						<td>老师我总是失眠怎么办</td>
-						<td> <span class="badge">50</span></td>
-						<td>2017-01-01 18:01:01</td>
-						<td>某学生</td>
-					</tr>
-					<tr>
-						<td>老师我总是失眠怎么办</td>
-						<td> <span class="badge">50</span></td>
-						<td>2017-01-01 18:01:01</td>
-						<td>某学生</td>
-					</tr>
-				</table>
+				<div id="post-list-div">
+					
+					<table class="table ">
+						<tr id="list-title">
+							<th>帖子</th>
+							<th>回复数</th>
+							<th>最后回复时间</th>
+							<th>作者</th>
+						</tr>
+						<tr>
+							<td>老师我总是失眠怎么办 <span class="label label-success ">已答复</span></td>
+							<td> <span class="badge ">50</span></td>
+							<td>2017-01-01 18:01:01</td>
+							<td>某学生</td>
+						</tr>
+						<tr>
+							<td>老师我总是失眠怎么办 <span class="label label-warning ">需补充信息</span></td>
+							<td> <span class="badge ">50</span></td>
+							<td>2017-01-01 18:01:01</td>
+							<td>某学生</td>
+						</tr>
+						<tr>
+							<td>老师我总是失眠怎么办 </td>
+							<td> <span class="badge ">50</span></td>
+							<td>2017-01-01 18:01:01</td>
+							<td>某学生</td>
+						</tr>
+						<tr>
+							<td>老师我总是失眠怎么办</td>
+							<td> <span class="badge ">50</span></td>
+							<td>2017-01-01 18:01:01</td>
+							<td>某学生</td>
+						</tr>
+						<tr>
+							<td>老师我总是失眠怎么办</td>
+							<td> <span class="badge ">50</span></td>
+							<td>2017-01-01 18:01:01</td>
+							<td>某学生</td>
+						</tr>
+						<tr>
+							<td>老师我总是失眠怎么办</td>
+							<td> <span class="badge ">50</span></td>
+							<td>2017-01-01 18:01:01</td>
+							<td>某学生</td>
+						</tr>
+					</table>
+				</div>
+				<div id="new-post-div" style="display: none; padding: 6px;">
+					<form action="#" novalidate>
+						<div class="form-group">
+							<label for="new-post-title">标题</label>
+							<input type="text" class="form-control" name="title" id="new-post-title" placeholder="请输入帖子标题 "/>
+						</div>
+						<div class="form-group ">
+							<label for="new-post">帖子内容</label>
+							<textarea id="new-post" name="content" class="summernote"></textarea>
+						</div>
+					</form>
+					<button type="button" id="new-post-submit" class="btn btn-primary btn-lg btn-block">发帖</button>
 			</div>
-			<nav style="text-align: center;">
-				<ul class="pagination">
+			</div>
+			<nav class="bottom-page" style="text-align: center; ">
+				<ul class="pagination ">
 					<li>
-						<a href="#">&laquo;</a>
+						<a href="# ">&laquo;</a>
 					</li>
-					<li class="active">
-						<a href="#">1</a>
-					</li>
-					<li>
-						<a href="#">2</a>
+					<li class="active ">
+						<a href="# ">1</a>
 					</li>
 					<li>
-						<a href="#">3</a>
+						<a href="# ">2</a>
 					</li>
 					<li>
-						<a href="#">4</a>
+						<a href="# ">3</a>
 					</li>
 					<li>
-						<a href="#">5</a>
+						<a href="# ">4</a>
 					</li>
 					<li>
-						<a href="#">&raquo;</a>
+						<a href="# ">5</a>
+					</li>
+					<li>
+						<a href="# ">&raquo;</a>
 					</li>
 				</ul>
 			</nav>
-			<div id="new-post"></div>
+			
 		</div>
+	</main>
 	</body>
 
 </html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>帖子 - 南阳理工心理健康论坛</title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/summernote.css" />
+		<link rel="stylesheet" href="css/common.css" />
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/summernote.min.js"></script>
+		<script type="text/javascript" src="js/summernote-zh-CN.min.js"></script>
+		<script type="text/javascript" src="js/loadNavAndFooter.js" ></script>
+		
+		
+		<style type="text/css">
+			.panel-title {
+				font-size: 24px;
+			}
+			.row{
+				border-bottom: solid 1px;
+			}
+			.table{
+				margin-bottom: 0;
+			}
+			.user-info{
+				min-width: 200px;
+				text-align: center;
+				padding-top: 30px !important;
+				background-color: rgba(51, 166, 213, 0.07);
+			}
+			.author-name{
+				margin-top: 10px;
+			}
+			.author-type{
+				margin-top: 10px;
+			}
+			.post-content{
+			}
+			.panel-body{
+				padding: 0px;
+			}
+			.content-control{
+				margin-top: 180px;
+				margin-right: 10px;
+			}
+			.reply-index{
+				margin-right: 10px;
+				margin-bottom: 8px;
+			}
+			.content-control, .content-control a,.reply-index{
+				text-align: right;
+				color: #999;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+				$("#new-reply-submit").click(function(){
+					var markupStr = $('#new-reply').summernote('code');
+					console.log(markupStr);
+				});
+				$("#reply-div").insertAfter($(".panel"));
+				$("#reply-div").show();
+			});
+		</script>
+		<script type="text/javascript" src="js/loadSummernote.js" ></script>
+	</head>
+
+	<body>
+		<main>
+			<div>
+				<ol class="breadcrumb">
+					<li>
+						<a href="#">首页</a>
+					</li>
+					<li>
+						<a href="#">求助区</a>
+					</li>
+					<li>
+						<a href="#">求助老师</a>
+					</li>
+					<li class="active">老师我总是失眠怎么办</li>
+				</ol>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="panel-title">
+						老师我总是失眠怎么办
+					</div>
+				</div>
+				
+				<div class="panel-body">
+					<table class="table ">
+						<tr>
+							<td class="user-info">
+									<img src="image/student_avater.jpg" width="100px" height="100px"/>
+									<div class="author-name">一个学生</div>
+									<div class="author-type"><span class="label label-default">学生</span></div>
+							</td>
+							<td class="post-content"> 
+								<div class="reply-index">1楼</div>
+								老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空老师我失眠多梦感觉身体被掏空
+								<div class="content-control"> 2017-4-12 19:09:21 <a href="#">删除</a> | <a href="#">封禁</a></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="user-info">
+									<img src="image/student_avater.jpg" width="100px" height="100px"/>
+									<div class="author-name">另一个学生</div>
+									<div class="author-type"><span class="label label-default">学生</span></div>
+							</td>
+							<td class="post-content"> 
+								<div class="reply-index">2楼</div>
+								楼上你完了，等死吧
+								<div class="content-control"> 2017-4-12 19:09:21 <a href="#">删除</a> | <a href="#">封禁</a></div>
+							</td>
+						</tr>
+				</div>
+			</div>
+			<div id="reply-div" style="display: none;margin-top: 50px;">
+				<form action="#" novalidate>
+					<div class="form-group ">
+						<textarea id="new-reply" name="reply" class="summernote"></textarea>
+					</div>
+				</form>
+				<button type="button" id="new-reply-submit" class="btn btn-primary btn-lg btn-block">发表回复</button></div>
+		</main>
+	</body>
+
+</html>

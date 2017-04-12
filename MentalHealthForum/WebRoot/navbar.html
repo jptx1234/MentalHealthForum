@@ -1,7 +1,7 @@
-<nav class="navbar navbar-inverse" role="navigation" style="background-color: #33A6D5;border: none;">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #33A6D5;border: none;">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#" style="color: #fff;">南工心理健康论坛</a>
+			<a class="navbar-brand" href="index.html" style="color: #fff;">南工心理健康论坛</a>
 		</div>
 		<div>
 
@@ -24,6 +24,9 @@
 						.navbar-inverse .navbar-nav>li>a {
 							color: #fff;
 						}
+						body{
+							padding-top: 100px;
+						}
 					</style>
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="    border-radius: 5px 5px 0px 0px;">
 						用户1 <b class="caret"></b>
@@ -31,6 +34,19 @@
 					<ul class="dropdown-menu">
 						<li>
 							<a href="#">个人中心</a>
+						</li>
+						<li>
+							<a href="#" id="regist-btn">注册</a>
+							<script type="text/javascript">
+								$(function(){
+									$("#regist-btn").click(function(){
+										$("#regist-dialog").modal({
+											backdrop: 'static'
+										});
+									});
+									
+								});
+							</script>
 						</li>
 						<li>
 							<a href="#">修改密码</a>
