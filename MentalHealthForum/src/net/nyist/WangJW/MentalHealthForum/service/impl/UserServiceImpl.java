@@ -25,6 +25,7 @@ public class UserServiceImpl implements IUserService {
 		DetachedCriteria dc = DetachedCriteria.forClass(User.class);
 		dc.add(Restrictions.eq("username", model.getUsername()));
 		dc.add(Restrictions.eq("password", model.getPassword()));
+		System.out.println(model.getUsername()+"---"+model.getPassword());
 		List<User> list = userDao.findByCriteria(dc);
 		if (list == null || list.size() != 1) {
 			return null;

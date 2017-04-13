@@ -14,7 +14,6 @@ public class User implements java.io.Serializable {
 	private Long id;
 	private String username;
 	private String password;
-	private String nickname;
 	private String gender;
 	private Short age;
 	private String avatar;
@@ -37,11 +36,10 @@ public class User implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public User(String username, String password, String nickname, String gender, Short age, String avatar,
+	public User(String username, String password, String gender, Short age, String avatar,
 			Boolean status, Boolean isAdmin, Set topics, Set replies) {
 		this.username = username;
 		this.password = password;
-		this.nickname = nickname;
 		this.gender = gender;
 		this.age = age;
 		this.avatar = avatar;
@@ -75,14 +73,6 @@ public class User implements java.io.Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getNickname() {
-		return this.nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public String getGender() {

@@ -16,9 +16,6 @@
         <property name="password" type="java.lang.String">
             <column name="password" length="64" not-null="true" />
         </property>
-        <property name="nickname" type="java.lang.String">
-            <column name="nickname" length="20" />
-        </property>
         <property name="gender" type="java.lang.String">
             <column name="gender" length="10" />
         </property>

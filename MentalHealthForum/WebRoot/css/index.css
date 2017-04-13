@@ -39,3 +39,7 @@ ol {
 	z-index: 1;
 	cursor: pointer;
 }
+
+.board-groups a{
+	color: #000000;
+}

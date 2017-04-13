@@ -9,17 +9,26 @@
 				</h4>
 			</div>
 			<div class="modal-body">
-				<form role="form" class="form-horizontal">
-					<div class="form-group">
+				<div class="alert alert-dismissable" id="login-result" style="display: none;">
+					<button type="button" class="close" data-dismiss="alert"
+							aria-hidden="true">
+						&times;
+					</button>
+					<span></span>
+				</div>
+				<form role="form" class="form-horizontal" id="login-form">
+					<div class="form-group" id="login-form-username-div">
 						<label for="username" class="col-sm-2 control-label">用户名</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="username" name="username" placeholder="用户名长度在4-20之间" />
+							<input type="text" class="form-control" id="username" name="username" placeholder="请输入注册时的用户名" />
+							<span class="help-block"></span>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group" id="login-form-password-div">
 						<label for="password" class="col-sm-2 control-label">密码</label>
 						<div class="col-sm-10">
 							<input type="password" class="form-control" id="password" name="password" placeholder="密码长度在6-20之间" />
+							<span class="help-block"></span>
 						</div>
 					</div>
 				</form>
@@ -27,9 +36,50 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消
 				</button>
-				<button type="button" class="btn btn-primary">
+				<button type="button" class="btn btn-primary" onclick="login()" id="login-btn">
 					登录
 				</button>
+				<script type="text/javascript">
+					function login(){
+						$("#login-result").hide();
+						$("#login-form .has-error").removeClass("has-error");
+						$("#login-form .help-block").text("");
+						var validate = true;
+						var username = $("#login-form input[name='username']").val();
+						var password = $("#login-form input[name='password']").val();
+						if(username.length <= 0){
+							$("#login-form-username-div").addClass("has-error");
+							$("#login-form input[name='username'] ~ .help-block").text("用户名不能为空");
+							validate = false;
+						}
+						if(password.length <= 0){
+							$("#login-form-password-div").addClass("has-error");
+							$("#login-form input[name='password'] ~ .help-block").text("密码不能为空");
+							validate = false;
+						}
+						if(validate){
+							$("#login-form :input").attr("disabled","disabled");
+							$("#login-btn").attr("disabled","disabled");
+							$.post("user_login",{"username":username,"password":password},function(data){
+								if(data.status == 1){
+									$("#login-result").removeClass("alert-danger");
+									$("#login-result").addClass("alert-success");
+									$("#login-result span").text(data.msg);
+									setTimeout(function(){
+										window.location.reload();
+									},2000);
+								}else{
+									$("#login-result").removeClass("alert-success");
+									$("#login-result").addClass("alert-danger");
+									$("#login-result span").text(data.msg);
+									$("#login-form :input").removeAttr("disabled");
+									$("#login-btn").removeAttr("disabled");
+								}
+								$("#login-result").show();
+							},"json");
+						}
+					}
+				</script>
 			</div>
 		</div>
 		</div>

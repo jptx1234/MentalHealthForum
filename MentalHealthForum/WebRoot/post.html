@@ -76,7 +76,6 @@
 					</div>
 				</form>
 				<button type="button" id="new-reply-submit" class="btn btn-primary btn-lg btn-block">发表回复</button></div>
-			<script type="text/javascript" src="js/loadSummernote.js" ></script>
 			<script type="text/javascript">
 				$("#new-reply-submit").click(function(){
 					var markupStr = $('#new-reply').summernote('code');
@@ -84,6 +83,7 @@
 				$("#reply-div").insertAfter($(".panel"));
 				$("#reply-div").show();
 			</script>
+			<script type="text/javascript" src="js/loadSummernote.js" ></script>
 		</main>
 	</body>
 </html>
