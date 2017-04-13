@@ -15,12 +15,15 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
 import net.nyist.WangJW.MentalHealthForum.domain.PageBean;
+import net.nyist.WangJW.MentalHealthForum.domain.ResultObject;
 
 public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 
 	private static final long serialVersionUID = 1L;
 	protected T model;
 	protected PageBean pageBean;
+	protected ResultObject resultObject = new ResultObject();
+
 	
 	@Override
 	public T getModel() {
@@ -57,6 +60,19 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 		try {
 			ServletActionContext.getResponse().setContentType("text/json;charset=UTF-8");
 			ServletActionContext.getResponse().getWriter().print(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	protected void responseJson(ResultObject resultObject) {
+		try {
+			String json = null;
+			if (resultObject == null) {
+				json = "";
+			}else {
+				json = resultObject.toString();
+			}
+			responseJson(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

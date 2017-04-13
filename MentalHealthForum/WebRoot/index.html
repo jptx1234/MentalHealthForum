@@ -6,56 +6,20 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
 		<title>首页 - 南阳理工心理健康论坛</title>
 		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/summernote.css" />
 		<link rel="stylesheet" href="css/common.css" />
-		<script src="js/jquery-3.1.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="css/board.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/post.css" />
+		<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/summernote.min.js"></script>
+		<script type="text/javascript" src="js/summernote-zh-CN.min.js"></script>
 		<script type="text/javascript" src="js/loadNavAndFooter.js" ></script>
-		<style type="text/css">
-			
-			.board-title {
-				font-size: 20px;
-				color: #33a6d5;
-			}
-			.panel {
-				margin-bottom: 20px;
-			}
-			.board {
-				border: 1px solid;
-			}
-			
-			.board:hover {
-				cursor: pointer;
-				border-color: #33a6d5;
-			}
-			
-			.panel-body {
-				padding: 0px;
-			}
-			
-			.list-group-item:first-child {
-				border-top-left-radius: 0px;
-				border-top-right-radius: 0px;
-			}
-			
-			ul,
-			ol {
-				margin-bottom: 0px;
-			}
-			
-			.list-group {
-				margin-bottom: 0px;
-			}
-			
-			.list-group-item:hover {
-				box-shadow: 0px 0px 20px 0px #33a6d5;
-				z-index: 1;
-				cursor: pointer;
-			}
-		</style>
 	</head>
 
 	<body>
-	<main>
+	<main id="main">
 		<div class="center-block board-groups">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -80,10 +44,12 @@
 				</div>
 				<div class="panel-body">
 					<ul class="list-group">
-						<li class="list-group-item">
-							<div class="board-title">求助老师</div>
-							<small>本版块可以匿名。有病？问老师，老师给你来个了断！</small>
-						</li>
+						<a href="board.html">
+							<li class="list-group-item">
+								<div class="board-title">求助老师</div>
+								<small>本版块可以匿名。有病？问老师，老师给你来个了断！</small>
+							</li>
+						</a>
 					</ul>
 				</div>
 			</div>
@@ -103,6 +69,7 @@
 		</div>
 		
 	</main>
+
 	</body>
 
 </html>

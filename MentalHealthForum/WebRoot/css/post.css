@@ -1,0 +1,49 @@
+.panel-title {
+	font-size: 24px;
+}
+
+.row {
+	border-bottom: solid 1px;
+}
+
+.table {
+	margin-bottom: 0;
+}
+
+.user-info {
+	min-width: 200px;
+	text-align: center;
+	padding-top: 30px !important;
+	background-color: rgba(51, 166, 213, 0.07);
+}
+
+.author-name {
+	margin-top: 10px;
+}
+
+.author-type {
+	margin-top: 10px;
+}
+
+.post-content {}
+
+.panel-body {
+	padding: 0px;
+}
+
+.content-control {
+	margin-top: 180px;
+	margin-right: 10px;
+}
+
+.reply-index {
+	margin-right: 10px;
+	margin-bottom: 8px;
+}
+
+.content-control,
+.content-control a,
+.reply-index {
+	text-align: right;
+	color: #999;
+}
