@@ -40,9 +40,24 @@
 							<script type="text/javascript">
 								$(function(){
 									$("#regist-btn").click(function(){
-										$("#regist-dialog").modal({
-											backdrop: 'static'
+										$("#md-dialog").modal({
+											backdrop: 'static',
 										});
+										$("#md-dialog").load("registdiv.html");
+									});
+									
+								});
+							</script>
+						</li>
+						<li>
+							<a href="#" id="login-btn">登录</a>
+							<script type="text/javascript">
+								$(function(){
+									$("#login-btn").click(function(){
+										$("#md-dialog").modal({
+											backdrop: 'static',
+										});
+										$("#md-dialog").load("logindiv.html");
 									});
 									
 								});
@@ -72,3 +87,6 @@
 		</div>
 	</div>
 </nav>
+<div class="modal fade" id="md-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		
+</div>

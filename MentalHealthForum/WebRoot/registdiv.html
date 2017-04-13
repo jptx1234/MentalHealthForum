@@ -1,0 +1,96 @@
+<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title">
+					注册账户
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" class="form-horizontal">
+					<div class="form-group">
+						<label for="username" class="col-sm-2 control-label">用户名</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="username" name="username" placeholder="用户名长度在4-20之间" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="password" class="col-sm-2 control-label">密码</label>
+						<div class="col-sm-10">
+							<input type="password" class="form-control" id="password" name="password" placeholder="密码长度在6-20之间" />
+						</div>
+					</div>
+					<div class="form-group">
+						<style type="text/css">
+							.radio{
+								display: inline-block;
+							}
+							.radio input[type='radio']{
+								position: static;
+								margin-left: 0px;
+							}
+							.radio label{
+								padding-left: 0;
+								margin-right: 20px;
+							}
+							.control-label{
+								padding-top: 4px !important;
+							}
+						</style>
+						<label class="col-sm-2 control-label">性别</label>
+						<div class="col-sm-10">
+							
+							<div class="radio">
+								<input type="radio" name="gender" value="male" id="gender-male" />
+								<label for="gender-male">男</label>
+							</div>
+							<div class="radio">
+								<input type="radio" name="gender" value="female" id="gender-female" />
+								<label for="gender-female">女</label>
+							</div>
+							<div class="radio">
+								<input type="radio" name="gender" id="gender-other" />
+								<input type="text" readonly="readonly" class="form-control" id="other-gender-value" placeholder="其他请填写，或写“保密”" style="display: inline-block;width: 14em;" />
+							</div>
+							<script type="text/javascript">
+								$("#other-gender-value").prop("readonly","readonly");
+								$(".radio input[name='gender']").click(function(){
+									if($("#gender-other").prop("checked")){
+										$("#other-gender-value").removeAttr("readonly");
+									}else{
+										$("#other-gender-value").attr("readonly","readonly");
+									}
+									
+								});
+							</script>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="email" class="col-sm-2 control-label">邮箱</label>
+						<div class="col-sm-10">
+							<input type="email" class="form-control" id="email" name="email" placeholder="请填写邮箱" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"></label>
+						<div class="checkbox col-sm-10">
+						    <label>
+						      <input type="checkbox" style="margin-top: 8px;">我同意并遵守萌萌哒法则
+						    </label>
+						 </div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消
+				</button>
+				<button type="button" class="btn btn-primary">
+					注册
+				</button>
+			</div>
+		</div>
+		</div>
+
+
