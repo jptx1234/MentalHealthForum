@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		">
+	<!-- 1.数据层实现类继承HibernateDaoSupport就可以使用HibernateTemplate对象操作数据库 -->	
+	<!-- 2.在spring的配置文件数据层对应的bean中注入sessionFactory -->
+	
+	<!-- 独立式整合 -->
+	<!-- 3.声明sessionFactory对应的bean -->
+	<!-- 4.将原始hibernate.cfg.xml中的信息加入到spring的核心配置中 -->	
+	
+	<!-- 5.使用注解式事务，开启注解事务管理的驱动，使用hibernate专用的事务管理器 -->
+	<!-- 6.使用注解格式添加事务 -->
+	
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- dataSource -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${driverClassName}"/>
+		<property name="jdbcUrl" value="${jdbcurl}"/>
+		<property name="user" value="${jdbcuser}"/>
+		<property name="password" value="${jdbcpassword}"/>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="txManager"/>
+	<context:component-scan base-package="net.nyist.WangJW.MentalHealthForum.*" />
+	<context:annotation-config/>
+	<!-- txManager -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	 
+	
+	<!-- sessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- 数据库连接的配置 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 可选配置 -->
+		<property name="hibernateProperties">
+			<props>
+				<!-- hibernate.属性前缀不要丢失 -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.format_sql">false</prop>
+			</props>
+		</property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:net/nyist/WangJW/MentalHealthForum/domain/**/*.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>
+
+
+
