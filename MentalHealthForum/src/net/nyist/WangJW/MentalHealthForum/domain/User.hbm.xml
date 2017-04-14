@@ -25,9 +25,9 @@
         <property name="avatar" type="java.lang.String">
             <column name="avatar" length="40" />
         </property>
-        <property name="status" type="java.lang.Boolean">
+        <property name="status" type="java.lang.Short">
             <column name="status">
-                <comment>0:正常，1:未激活邮件，2:被封禁</comment>
+                <comment>0:正常，1:被封禁</comment>
             </column>
         </property>
         <property name="isAdmin" type="java.lang.Boolean">

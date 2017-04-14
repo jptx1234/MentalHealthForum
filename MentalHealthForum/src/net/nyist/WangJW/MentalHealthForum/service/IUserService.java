@@ -6,4 +6,6 @@ public interface IUserService {
 
 	User login(User model);
 
+	void save(User model);
+
 }

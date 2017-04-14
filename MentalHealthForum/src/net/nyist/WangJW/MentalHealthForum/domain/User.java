@@ -14,11 +14,11 @@ public class User implements java.io.Serializable {
 	private Long id;
 	private String username;
 	private String password;
-	private String gender;
+	private String gender = "未填写";
 	private Short age;
 	private String avatar;
-	private Boolean status;
-	private Boolean isAdmin;
+	private Short status = 0;
+	private Boolean isAdmin = false;
 	private Set topics = new HashSet(0);
 	private Set replies = new HashSet(0);
 
@@ -37,7 +37,7 @@ public class User implements java.io.Serializable {
 
 	/** full constructor */
 	public User(String username, String password, String gender, Short age, String avatar,
-			Boolean status, Boolean isAdmin, Set topics, Set replies) {
+			Short status, Boolean isAdmin, Set topics, Set replies) {
 		this.username = username;
 		this.password = password;
 		this.gender = gender;
@@ -99,11 +99,11 @@ public class User implements java.io.Serializable {
 		this.avatar = avatar;
 	}
 
-	public Boolean getStatus() {
+	public Short getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(Short status) {
 		this.status = status;
 	}
 

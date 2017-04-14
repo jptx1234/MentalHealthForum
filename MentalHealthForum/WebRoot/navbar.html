@@ -56,7 +56,7 @@
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a href="#">退出</a>
+							<a href="#" onclick="logout()">退出</a>
 						</li>
 					</ul>
 				</li>
@@ -98,6 +98,11 @@
 						backdrop: 'static',
 					});
 					$("#md-dialog").load("logindiv.html");
+        		}
+        		function logout(){
+        			$.get("user_logout",{},function(data){
+        				window.location.reload();
+        			},"json");
         		}
         	</script>
 		</div>

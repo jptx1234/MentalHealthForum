@@ -18,7 +18,7 @@ public class Topic implements java.io.Serializable {
 	private String content;
 	private Timestamp time;
 	private Boolean anonymous;
-	private Boolean status;
+	private Short status = 0;
 	private Set replies = new HashSet(0);
 
 	// Constructors
@@ -33,7 +33,7 @@ public class Topic implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Topic(User user, String title, String content, Timestamp time, Boolean anonymous, Boolean status,
+	public Topic(User user, String title, String content, Timestamp time, Boolean anonymous, Short status,
 			Set replies) {
 		this.user = user;
 		this.title = title;
@@ -94,11 +94,11 @@ public class Topic implements java.io.Serializable {
 		this.anonymous = anonymous;
 	}
 
-	public Boolean getStatus() {
+	public Short getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(Short status) {
 		this.status = status;
 	}
 

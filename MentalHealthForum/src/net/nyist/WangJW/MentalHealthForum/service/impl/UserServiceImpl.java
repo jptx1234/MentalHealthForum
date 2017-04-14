@@ -32,6 +32,11 @@ public class UserServiceImpl implements IUserService {
 		}
 		return list.get(0);
 	}
+
+	@Override
+	public void save(User model) {
+		userDao.save(model);
+	}
 	
 	
 	

@@ -16,7 +16,7 @@ public class Reply implements java.io.Serializable {
 	private String content;
 	private Timestamp time;
 	private Boolean anonymous;
-	private Boolean status;
+	private Short status = 0;
 
 	// Constructors
 
@@ -32,7 +32,7 @@ public class Reply implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Reply(Topic topic, User user, String content, Timestamp time, Boolean anonymous, Boolean status) {
+	public Reply(Topic topic, User user, String content, Timestamp time, Boolean anonymous, Short status) {
 		this.topic = topic;
 		this.user = user;
 		this.content = content;
@@ -91,11 +91,11 @@ public class Reply implements java.io.Serializable {
 		this.anonymous = anonymous;
 	}
 
-	public Boolean getStatus() {
+	public Short getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(Short status) {
 		this.status = status;
 	}
 

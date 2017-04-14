@@ -64,7 +64,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 			e.printStackTrace();
 		}
 	}
-	protected void responseJson(ResultObject resultObject) {
+	protected void responseResultObject() {
 		try {
 			String json = null;
 			if (resultObject == null) {
@@ -77,6 +77,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	
 	protected void responsePageJson(String... excludes){

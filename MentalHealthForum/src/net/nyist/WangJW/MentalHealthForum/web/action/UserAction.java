@@ -2,6 +2,7 @@ package net.nyist.WangJW.MentalHealthForum.web.action;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class UserAction extends BaseAction<User> {
 			resultObject.setStatus(1);
 			resultObject.setMsg("登录成功，欢迎回来，"+loginUser.getUsername());
 		}
-		responseJson(resultObject);
+		responseResultObject();
 		
 		return NONE;
 	}
@@ -49,6 +50,35 @@ public class UserAction extends BaseAction<User> {
 		return NONE;
 	}
 	
+	public String regist(){
+		if (StringUtils.isBlank(model.getUsername())) {
+			resultObject.setStatus(0);
+			resultObject.setMsg("用户名不能为空");
+		}else if(StringUtils.isBlank(model.getPassword())){
+			resultObject.setStatus(0);
+			resultObject.setMsg("密码不能为空");
+		}else {
+			try {
+				userService.save(model);
+				resultObject.setStatus(1);
+				resultObject.setMsg("注册成功，请前去登录");
+			} catch (Exception e) {
+				resultObject.setStatus(0);
+				resultObject.setMsg("注册失败，服务器异常");
+			}
+		}
+		responseResultObject();
+		
+		return NONE;
+	}
+	
+	public String logout(){
+		ServletActionContext.getRequest().getSession().invalidate();
+		resultObject.setStatus(1);
+		responseResultObject();
+		
+		return NONE;
+	}
 	
 	
 	

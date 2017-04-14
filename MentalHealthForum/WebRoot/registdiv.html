@@ -9,17 +9,24 @@
 				</h4>
 			</div>
 			<div class="modal-body" id="regist-form">
+				<div class="alert alert-dismissable" id="regist-result" style="display: none;">
+					<button type="button" class="close" data-dismiss="alert"
+							aria-hidden="true">
+						&times;
+					</button>
+					<span></span>
+				</div>
 				<form role="form" class="form-horizontal">
 					<div class="form-group">
 						<label for="username" class="col-sm-2 control-label">用户名</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="username" name="username" placeholder="请填写昵称" />
+							<input type="text" class="form-control" id="username" name="username" placeholder="请填写用户名" required="required" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="password" class="col-sm-2 control-label">密码</label>
 						<div class="col-sm-10">
-							<input type="password" class="form-control" id="password" name="password" placeholder="密码长度在6-20之间" />
+							<input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required="required"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -49,11 +56,11 @@
 						<div class="col-sm-10">
 							
 							<div class="radio">
-								<input type="radio" name="gender" value="male" id="gender-male" />
+								<input type="radio" name="gender" value="男" id="gender-male" />
 								<label for="gender-male">男</label>
 							</div>
 							<div class="radio">
-								<input type="radio" name="gender" value="female" id="gender-female" />
+								<input type="radio" name="gender" value="女" id="gender-female" />
 								<label for="gender-female">女</label>
 							</div>
 							<div class="radio">
@@ -77,8 +84,17 @@
 						<label class="col-sm-2 control-label"></label>
 						<div class="checkbox col-sm-10">
 						    <label>
-						      <input type="checkbox" style="margin-top: 8px;">我同意并遵守萌萌哒法则
+						      <input type="checkbox" style="margin-top: 8px;" onclick="agreelaw()" id="regist-agree-law">我同意并遵守相关法律法规
 						    </label>
+						    <script type="text/javascript">
+						    	function agreelaw(){
+						    		if($("#regist-agree-law").prop("checked")){
+						    			$('#regist-btn').removeAttr("disabled");
+						    		}else{
+						    			$('#regist-btn').attr('disabled','disabled');
+						    		}
+						    	}
+						    </script>
 						 </div>
 					</div>
 				</form>
@@ -86,9 +102,33 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消
 				</button>
-				<button type="button" class="btn btn-primary">
+				<button type="button" class="btn btn-primary" id="regist-btn" onclick="regist()">
 					注册
 				</button>
+				<script type="text/javascript">
+					$('#regist-btn').attr('disabled','disabled');
+					function regist(){
+						var formdata = $("#regist-form form").serialize();
+						$("#regist-form :input").attr("disabled","disabled");
+						$("#regist-btn").attr("disabled","disabled");
+						$.post("user_regist",formdata,function(data){
+							if(data.status == 1){
+								$("#regist-result").removeClass("alert-danger");
+								$("#regist-result").addClass("alert-success");
+								$("#regist-result span").text(data.msg);
+								setTimeout(function(){
+									showLogin();
+								},2000);
+							}else{
+								$("#regist-result").addClass("alert-danger");
+								$("#regist-result span").text(data.msg);
+								$("#regist-form :input").removeAttr("disabled");
+								$("#regist-btn").removeAttr("disabled");
+							}
+							$("#regist-result").show();
+						},"json");
+					}
+				</script>
 			</div>
 		</div>
 		</div>

@@ -27,7 +27,7 @@
         <property name="anonymous" type="java.lang.Boolean">
             <column name="anonymous" />
         </property>
-        <property name="status" type="java.lang.Boolean">
+        <property name="status" type="java.lang.Short">
             <column name="status">
                 <comment>0:正常，1:被删除</comment>
             </column>

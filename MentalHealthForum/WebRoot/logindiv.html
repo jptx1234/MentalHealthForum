@@ -20,14 +20,14 @@
 					<div class="form-group" id="login-form-username-div">
 						<label for="username" class="col-sm-2 control-label">用户名</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="username" name="username" placeholder="请输入注册时的用户名" />
+							<input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" />
 							<span class="help-block"></span>
 						</div>
 					</div>
 					<div class="form-group" id="login-form-password-div">
 						<label for="password" class="col-sm-2 control-label">密码</label>
 						<div class="col-sm-10">
-							<input type="password" class="form-control" id="password" name="password" placeholder="密码长度在6-20之间" />
+							<input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" />
 							<span class="help-block"></span>
 						</div>
 					</div>
@@ -58,9 +58,10 @@
 							validate = false;
 						}
 						if(validate){
+							var formdata = $("#login-form").serialize();
 							$("#login-form :input").attr("disabled","disabled");
 							$("#login-btn").attr("disabled","disabled");
-							$.post("user_login",{"username":username,"password":password},function(data){
+							$.post("user_login",formdata,function(data){
 								if(data.status == 1){
 									$("#login-result").removeClass("alert-danger");
 									$("#login-result").addClass("alert-success");
