@@ -2,6 +2,8 @@ package net.nyist.WangJW.MentalHealthForum.domain;
 
 import java.sql.Timestamp;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * Reply entity. @author MyEclipse Persistence Tools
  */
@@ -17,6 +19,7 @@ public class Reply implements java.io.Serializable {
 	private Timestamp time;
 	private Boolean anonymous;
 	private Short status = 0;
+	private Integer floor;
 
 	// Constructors
 
@@ -51,6 +54,7 @@ public class Reply implements java.io.Serializable {
 		this.id = id;
 	}
 
+	@JSONField(serialize=false)
 	public Topic getTopic() {
 		return this.topic;
 	}
@@ -60,6 +64,9 @@ public class Reply implements java.io.Serializable {
 	}
 
 	public User getUser() {
+		if (anonymous == null || anonymous) {
+			return User.AnonymousUser;
+		}
 		return this.user;
 	}
 
@@ -70,11 +77,19 @@ public class Reply implements java.io.Serializable {
 	public String getContent() {
 		return this.content;
 	}
+	public Integer getFloor() {
+		return floor;
+	}
+
+	public void setFloor(Integer floor) {
+		this.floor = floor;
+	}
 
 	public void setContent(String content) {
 		this.content = content;
 	}
 
+	@JSONField(format="yyyy-MM-dd hh:mm:ss")
 	public Timestamp getTime() {
 		return this.time;
 	}
@@ -91,6 +106,7 @@ public class Reply implements java.io.Serializable {
 		this.anonymous = anonymous;
 	}
 
+	@JSONField(serialize=false)
 	public Short getStatus() {
 		return this.status;
 	}

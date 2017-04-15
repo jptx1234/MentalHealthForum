@@ -10,6 +10,9 @@
     	<action name="user_*" class="userAction" method="{1}">
     		
     	</action>
+    	<action name="topic_*" class="topicAction" method="{1}">
+    	
+    	</action>
     	
     </package>
 </struts>

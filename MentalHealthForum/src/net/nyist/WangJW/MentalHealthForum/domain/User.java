@@ -3,13 +3,18 @@ package net.nyist.WangJW.MentalHealthForum.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * User entity. @author MyEclipse Persistence Tools
  */
 
 public class User implements java.io.Serializable {
 
-	// Fields
+	private static final long serialVersionUID = 1L;
+
+	@JSONField(serialize=false)
+	public static final User AnonymousUser = new User("匿名用户","",false);
 
 	private Long id;
 	private String username;
@@ -67,6 +72,7 @@ public class User implements java.io.Serializable {
 		this.username = username;
 	}
 
+	@JSONField(serialize=false)
 	public String getPassword() {
 		return this.password;
 	}
@@ -99,6 +105,7 @@ public class User implements java.io.Serializable {
 		this.avatar = avatar;
 	}
 
+	@JSONField(serialize=false)
 	public Short getStatus() {
 		return this.status;
 	}
@@ -130,5 +137,5 @@ public class User implements java.io.Serializable {
 	public void setReplies(Set replies) {
 		this.replies = replies;
 	}
-
+	
 }

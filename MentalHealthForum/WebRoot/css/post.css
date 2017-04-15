@@ -11,7 +11,7 @@
 }
 
 .user-info {
-	min-width: 200px;
+	width: 200px;
 	text-align: center;
 	padding-top: 30px !important;
 	background-color: rgba(51, 166, 213, 0.07);

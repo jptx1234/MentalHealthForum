@@ -36,7 +36,13 @@ public class UserAction extends BaseAction<User> {
 		return NONE;
 	}
 	
-	public String getLoginInfo(){
+	public String getUserInfo(){
+		try {
+//			Thread.sleep(10000);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		User user = CommonUtils.getLoginUser();
 		JSONObject jsonObject = new JSONObject();
 		if (user == null) {
@@ -44,6 +50,8 @@ public class UserAction extends BaseAction<User> {
 		}else {
 			jsonObject.put("status", 1);
 			jsonObject.put("username", user.getUsername());
+			jsonObject.put("isAdmin", user.getIsAdmin());
+			jsonObject.put("id", user.getId());
 		}
 		responseJson(jsonObject.toJSONString());
 		
@@ -79,6 +87,8 @@ public class UserAction extends BaseAction<User> {
 		
 		return NONE;
 	}
+	
+	
 	
 	
 	

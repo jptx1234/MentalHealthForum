@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * Topic entity. @author MyEclipse Persistence Tools
  */
@@ -16,6 +18,7 @@ public class Topic implements java.io.Serializable {
 	private User user;
 	private String title;
 	private String content;
+	private Board board;
 	private Timestamp time;
 	private Boolean anonymous;
 	private Short status = 0;
@@ -55,6 +58,9 @@ public class Topic implements java.io.Serializable {
 	}
 
 	public User getUser() {
+		if (anonymous == null || anonymous) {
+			return User.AnonymousUser;
+		}
 		return this.user;
 	}
 
@@ -78,6 +84,7 @@ public class Topic implements java.io.Serializable {
 		this.content = content;
 	}
 
+	@JSONField(format="yyyy-MM-dd hh:mm:ss")
 	public Timestamp getTime() {
 		return this.time;
 	}
@@ -100,6 +107,14 @@ public class Topic implements java.io.Serializable {
 
 	public void setStatus(Short status) {
 		this.status = status;
+	}
+	
+	public Board getBoard() {
+		return board;
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 	public Set getReplies() {

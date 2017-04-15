@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>帖子 - 南阳理工心理健康论坛</title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/summernote.css" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/board.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/post.css" />
+		<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/summernote.min.js"></script>
+		<script type="text/javascript" src="js/summernote-zh-CN.min.js"></script>
+		<script type="text/javascript" src="js/loadNavAndFooter.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+	</head>
+
+	<body>
+		<main id="main">
+			<div>
+				<ol class="breadcrumb">
+					<li>
+						<a href="#">首页</a>
+					</li>
+					<li>
+						<a href="#" content="topic-board">板块加载中</a>
+					</li>
+					<li class="active" content="topic-title">标题加载中</li>
+				</ol>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="panel-title" content="topic-title">
+						标题加载中
+					</div>
+				</div>
+				
+				<div class="panel-body">
+					<table class="table" id="topic-table">
+						<tr>
+							<td class="user-info">
+									<img width="100px" height="100px" content="topic-author-avatar"/>
+									<div class="author-name" content="topic-author"></div>
+									<div class="author-type"><span class="label label-default" content="topic-author-role"></span></div>
+							</td>
+							<td class="post-content"> 
+								<div class="reply-index">1楼</div>
+								<div content="topic-content">内容加载中</div>
+								<div class="content-control"><span content="topic-time"></span>&nbsp;<span content="control" style="display: none;"><a href="#">删除</a> | <a href="#">封禁</a></span></div>
+							</td>
+						</tr>
+						<tr id="reply-model" style="display: none;">
+							<td class="user-info">
+									<img width="100px" height="100px" content="reply-author-avatar"/>
+									<div class="author-name" content="reply-author"></div>
+									<div class="author-type"><span class="label label-default" content="reply-author-role">学生</span></div>
+							</td>
+							<td class="post-content"> 
+								<div class="reply-index" content="reply-floor"></div>
+								<div content="reply-content"></div>
+								<div class="content-control"><span content="reply-time"></span>&nbsp;<span content="control" style="display: none;"><a href="#">删除</a> | <a href="#">封禁</a></span></div>
+							</td>
+						</tr>
+				</div>
+			</div>
+			<div id="reply-div" style="display: none;margin-top: 50px;">
+				<form action="#" novalidate>
+					<div class="form-group ">
+						<textarea id="new-reply" name="reply" class="summernote"></textarea>
+					</div>
+				</form>
+				<button type="button" id="new-reply-submit" class="btn btn-primary btn-lg btn-block">发表回复</button></div>
+			<script type="text/javascript">
+				$("#new-reply-submit").click(function(){
+					var markupStr = $('#new-reply').summernote('code');
+				});
+				$("#reply-div").insertAfter($(".panel"));
+				$("#reply-div").show();
+			</script>
+			<script type="text/javascript" src="js/loadSummernote.js" ></script>
+			<script type="text/javascript">
+				$(function(){
+					var postId = getParameterByName("id");
+					$.get("topic_findTopicById",{"id" : postId},function(topic){
+						$("[content='topic-title']").text(topic.title);
+						$("[content='topic-board']").text(topic.board.name);
+						$("[content='topic-content']").text(topic.content);
+						$("[content='topic-author']").text(topic.user.username);
+						$("[content='topic-author-role']").text( topic.user.isAdmin ? "教师" : "学生");
+						$("[content='topic-author-avatar']").attr("src","avatars/"+topic.user.avatar);
+						$("[content='topic-time']").text(topic.time);
+						for(var i=0;i<topic.replies.length;i++){
+							var reply = topic.replies[i];
+							var model = $("#reply-model").clone();
+							var replyTrId = "reply-"+reply.id;
+							model.attr("id",replyTrId);
+							model.appendTo($("#topic-table"));
+							$("#"+replyTrId+" [content='reply-author']").text(reply.user.username);
+							$("#"+replyTrId+" [content='reply-author-avatar']").attr("src","avatars/"+reply.user.avatar);
+							$("#"+replyTrId+" [content='reply-author-role']").text( reply.user.isAdmin ? "教师" : "学生");
+							$("#"+replyTrId+" [content='reply-content']").text(reply.content);
+							$("#"+replyTrId+" [content='reply-floor']").text(reply.floor+"楼");
+							$("#"+replyTrId+" [content='reply-time']").text(reply.time);
+							model.show();
+						}
+						
+						if(window.user.login && window.user.isAdmin){
+							$("[content='control']").show();
+						}
+					},"json");
+				});
+			</script>
+		</main>
+	</body>
+</html>

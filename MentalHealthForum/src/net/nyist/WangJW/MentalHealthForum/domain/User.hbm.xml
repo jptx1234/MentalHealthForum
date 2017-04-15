@@ -35,13 +35,13 @@
                 <comment>0:不是管理员，1:是管理员</comment>
             </column>
         </property>
-        <set name="topics" inverse="true">
+        <set name="topics" inverse="true" lazy="true">
             <key>
                 <column name="author" not-null="true" />
             </key>
             <one-to-many class="net.nyist.WangJW.MentalHealthForum.domain.Topic" />
         </set>
-        <set name="replies" inverse="true">
+        <set name="replies" inverse="true" lazy="true">
             <key>
                 <column name="author" not-null="true" />
             </key>

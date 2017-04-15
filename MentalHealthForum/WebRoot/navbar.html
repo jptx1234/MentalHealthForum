@@ -77,16 +77,12 @@
             	登录
         	</button>
         	<script type="text/javascript">
-        		$.get("user_getLoginInfo",{},function(data){
-        			if(data.status == 1){
-        				$("#user-name").text(data.username);
-        				$("#user-nav-div").show();
-        			}else{
-        				$("#login-regist-div").show();
-        			}
-        		},"json");
-        		
-        		
+        		if(window.user.login){
+        			$("#user-name").text(window.user.username);
+        			$("#user-nav-div").show();
+        		}else{
+        			$("#login-regist-div").show();
+        		}
         		function showReg(){
         			$("#md-dialog").modal({
 						backdrop: 'static',

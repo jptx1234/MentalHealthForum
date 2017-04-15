@@ -32,7 +32,7 @@
                 <comment>0:正常，1:被删除，2:被管理员锁定</comment>
             </column>
         </property>
-        <set name="replies" inverse="true">
+        <set name="replies" inverse="true" lazy="true">
             <key>
                 <column name="topic_id" not-null="true">
                     <comment>所属主题贴</comment>
@@ -40,5 +40,10 @@
             </key>
             <one-to-many class="net.nyist.WangJW.MentalHealthForum.domain.Reply" />
         </set>
+        <many-to-one name="board" class="net.nyist.WangJW.MentalHealthForum.domain.Board" fetch="select">
+            <column name="board">
+                <comment>所属板块</comment>
+            </column>
+        </many-to-one>
     </class>
 </hibernate-mapping>
