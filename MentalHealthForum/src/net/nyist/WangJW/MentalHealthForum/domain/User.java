@@ -137,5 +137,12 @@ public class User implements java.io.Serializable {
 	public void setReplies(Set replies) {
 		this.replies = replies;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", gender=" + gender + ", age="
+				+ age + ", avatar=" + avatar + ", status=" + status + ", isAdmin=" + isAdmin + ", topics=" + topics.size()
+				+ ", replies=" + replies.size() + "]";
+	}
 	
 }

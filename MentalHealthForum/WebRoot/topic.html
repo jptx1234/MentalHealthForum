@@ -94,7 +94,7 @@
 					$.get("topic_findTopicById",{"id" : postId},function(topic){
 						$("[content='topic-title']").text(topic.title);
 						$("[content='topic-board']").text(topic.board.name);
-						$("[content='topic-content']").text(topic.content);
+						$("[content='topic-content']").html(topic.content);
 						$("[content='topic-author']").text(topic.user.username);
 						$("[content='topic-author-role']").text( topic.user.isAdmin ? "教师" : "学生");
 						$("[content='topic-author-avatar']").attr("src","avatars/"+topic.user.avatar);

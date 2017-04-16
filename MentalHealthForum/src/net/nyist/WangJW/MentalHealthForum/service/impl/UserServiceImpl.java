@@ -37,6 +37,11 @@ public class UserServiceImpl implements IUserService {
 	public void save(User model) {
 		userDao.save(model);
 	}
+
+	@Override
+	public User findById(Long id) {
+		return userDao.findById(id);
+	}
 	
 	
 	

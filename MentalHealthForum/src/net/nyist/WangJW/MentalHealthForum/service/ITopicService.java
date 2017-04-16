@@ -11,4 +11,6 @@ public interface ITopicService {
 
 	void pageQuery(PageBean pageBean);
 
+	Long save(Topic model);
+
 }

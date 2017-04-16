@@ -16,7 +16,7 @@ public class Reply implements java.io.Serializable {
 	private Topic topic;
 	private User user;
 	private String content;
-	private Timestamp time;
+	private Timestamp time = new Timestamp(System.currentTimeMillis());
 	private Boolean anonymous;
 	private Short status = 0;
 	private Integer floor;

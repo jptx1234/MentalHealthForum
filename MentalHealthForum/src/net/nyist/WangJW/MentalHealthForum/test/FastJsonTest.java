@@ -12,7 +12,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 
+import net.nyist.WangJW.MentalHealthForum.domain.Board;
 import net.nyist.WangJW.MentalHealthForum.domain.Topic;
+import net.nyist.WangJW.MentalHealthForum.domain.User;
 import net.nyist.WangJW.MentalHealthForum.service.ITopicService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,6 +38,10 @@ public class FastJsonTest {
 		
 		System.out.println(JSONObject.toJSONString(topic,filter));
 		
+	}
+	
+	@Test
+	public void test3(){
 	}
 
 }

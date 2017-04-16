@@ -80,6 +80,12 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 			e.printStackTrace();
 		}
 	}
+	protected void responseResultObject(int status,String msg){
+		resultObject.setStatus(status);
+		resultObject.setMsg(msg);
+		responseResultObject();
+	}
+	
 	
 	
 	

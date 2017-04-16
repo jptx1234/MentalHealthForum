@@ -8,4 +8,6 @@ public interface IUserService {
 
 	void save(User model);
 
+	User findById(Long id);
+
 }

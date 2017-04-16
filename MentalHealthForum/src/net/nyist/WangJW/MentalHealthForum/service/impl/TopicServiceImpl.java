@@ -31,5 +31,11 @@ public class TopicServiceImpl implements ITopicService {
 		topicDao.pageQuery(pageBean);
 	}
 
+	@Override
+	public Long save(Topic model) {
+		topicDao.save(model);
+		return model.getId();
+	}
+
 	
 }

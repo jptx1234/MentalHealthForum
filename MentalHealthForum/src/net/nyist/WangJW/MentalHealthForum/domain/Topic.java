@@ -19,8 +19,8 @@ public class Topic implements java.io.Serializable {
 	private String title;
 	private String content;
 	private Board board;
-	private Timestamp time;
-	private Boolean anonymous;
+	private Timestamp time = new Timestamp(System.currentTimeMillis());
+	private Boolean anonymous = false;
 	private Short status = 0;
 	private Set replies = new HashSet(0);
 
@@ -129,4 +129,11 @@ public class Topic implements java.io.Serializable {
 		return this.replies.size();
 	}
 
+	@Override
+	public String toString() {
+		return "Topic [id=" + id + ", user=" + user + ", title=" + title + ", content=" + content + ", board=" + board
+				+ ", time=" + time + ", anonymous=" + anonymous + ", status=" + status + ", replies=" + replies.size() + "]";
+	}
+
+	
 }
