@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class PageBean {
 	private int currentPage;//当前页码
 	private int pageSize;//没有显示记录数
@@ -12,12 +14,14 @@ public class PageBean {
 	private int total;//总记录数
 	private List rows;//当前页展示的数据集合
 	
+	@JSONField(serialize=false)
 	public int getCurrentPage() {
 		return currentPage;
 	}
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
+	@JSONField(serialize=false)
 	public int getPageSize() {
 		return pageSize;
 	}
@@ -30,6 +34,7 @@ public class PageBean {
 	public void setTotal(int total) {
 		this.total = total;
 	}
+	@JSONField(serialize=false)
 	public DetachedCriteria getDetachedCriteria() {
 		return detachedCriteria;
 	}

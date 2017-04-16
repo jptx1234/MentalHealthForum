@@ -20,6 +20,11 @@
 	</head>
 
 	<body>
+		<script type="text/javascript">
+			if(getParameterByName("id") == null){
+				window.location.href="index.html";
+			}
+		</script>
 		<main id="main">
 			<div>
 				<ol class="breadcrumb">
@@ -85,6 +90,7 @@
 			<script type="text/javascript">
 				$(function(){
 					var postId = getParameterByName("id");
+					
 					$.get("topic_findTopicById",{"id" : postId},function(topic){
 						$("[content='topic-title']").text(topic.title);
 						$("[content='topic-board']").text(topic.board.name);
@@ -99,12 +105,12 @@
 							var replyTrId = "reply-"+reply.id;
 							model.attr("id",replyTrId);
 							model.appendTo($("#topic-table"));
-							$("#"+replyTrId+" [content='reply-author']").text(reply.user.username);
-							$("#"+replyTrId+" [content='reply-author-avatar']").attr("src","avatars/"+reply.user.avatar);
-							$("#"+replyTrId+" [content='reply-author-role']").text( reply.user.isAdmin ? "教师" : "学生");
-							$("#"+replyTrId+" [content='reply-content']").text(reply.content);
-							$("#"+replyTrId+" [content='reply-floor']").text(reply.floor+"楼");
-							$("#"+replyTrId+" [content='reply-time']").text(reply.time);
+							model.find("[content='reply-author']").text(reply.user.username);
+							model.find("[content='reply-author-avatar']").attr("src","avatars/"+reply.user.avatar);
+							model.find("[content='reply-author-role']").text( reply.user.isAdmin ? "教师" : "学生");
+							model.find("[content='reply-content']").text(reply.content);
+							model.find("[content='reply-floor']").text(reply.floor+"楼");
+							model.find("[content='reply-time']").text(reply.time);
 							model.show();
 						}
 						

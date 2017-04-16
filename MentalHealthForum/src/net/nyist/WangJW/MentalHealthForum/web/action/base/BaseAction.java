@@ -11,6 +11,9 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.JSONWriter;
 import org.hibernate.criterion.DetachedCriteria;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -80,7 +83,9 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 	
 	
 	
-	protected void responsePageJson(String... excludes){
+	protected void responsePageJson(SerializeFilter... filters){
+		String json = JSON.toJSONString(pageBean, filters);
+		responseJson(json);
 	}
 	
 	protected void responseJsonArray(Iterable<? extends Object> array, String... excludes){

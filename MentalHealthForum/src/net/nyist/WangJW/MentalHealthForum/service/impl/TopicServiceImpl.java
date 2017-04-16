@@ -1,11 +1,16 @@
 package net.nyist.WangJW.MentalHealthForum.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.nyist.WangJW.MentalHealthForum.dao.ITopicDao;
+import net.nyist.WangJW.MentalHealthForum.domain.PageBean;
 import net.nyist.WangJW.MentalHealthForum.domain.Topic;
 import net.nyist.WangJW.MentalHealthForum.service.ITopicService;
 
@@ -20,7 +25,11 @@ public class TopicServiceImpl implements ITopicService {
 	public Topic findById(Long i) {
 		return topicDao.findById(i);
 	}
-	
-	
+
+	@Override
+	public void pageQuery(PageBean pageBean) {
+		topicDao.pageQuery(pageBean);
+	}
+
 	
 }

@@ -20,6 +20,11 @@
 	</head>
 
 	<body>
+		<script type="text/javascript">
+			if(getParameterByName("id") == null){
+				window.location.href="index.html";
+			}
+		</script>
 	<main id="main">
 		<div class="center-block post-list">
 			<ol class="breadcrumb">
@@ -42,48 +47,18 @@
 				</div>
 				<div id="post-list-div">
 					
-					<table class="table ">
+					<table class="table " id="topic-list-table">
 						<tr id="list-title">
 							<th>帖子</th>
 							<th>回复数</th>
-							<th>最后回复时间</th>
+							<th>发帖时间</th>
 							<th>作者</th>
 						</tr>
-						<tr>
-							<td>老师我总是失眠怎么办 <span class="label label-success ">已答复</span></td>
-							<td> <span class="badge ">50</span></td>
-							<td>2017-01-01 18:01:01</td>
-							<td>某学生</td>
-						</tr>
-						<tr>
-							<td>老师我总是失眠怎么办 <span class="label label-warning ">需补充信息</span></td>
-							<td> <span class="badge ">50</span></td>
-							<td>2017-01-01 18:01:01</td>
-							<td>某学生</td>
-						</tr>
-						<tr>
-							<td>老师我总是失眠怎么办 </td>
-							<td> <span class="badge ">50</span></td>
-							<td>2017-01-01 18:01:01</td>
-							<td>某学生</td>
-						</tr>
-						<tr>
-							<td>老师我总是失眠怎么办</td>
-							<td> <span class="badge ">50</span></td>
-							<td>2017-01-01 18:01:01</td>
-							<td>某学生</td>
-						</tr>
-						<tr>
-							<td>老师我总是失眠怎么办</td>
-							<td> <span class="badge ">50</span></td>
-							<td>2017-01-01 18:01:01</td>
-							<td>某学生</td>
-						</tr>
-						<tr>
-							<td>老师我总是失眠怎么办</td>
-							<td> <span class="badge ">50</span></td>
-							<td>2017-01-01 18:01:01</td>
-							<td>某学生</td>
+						<tr style="display: none;" id="topic-row-model">
+							<td><a href="#" content="topic-title"></a></td>
+							<td> <span class="badge " content="topic-replies-count"></span></td>
+							<td content="topic-time"></td>
+							<td content="topic-author"></td>
 						</tr>
 					</table>
 				</div>
@@ -155,6 +130,23 @@
 				$("#new-post-submit").click(function(){
 					var markupStr = $('#new-post').summernote('code');
 					console.log(markupStr);
+				});
+				$(function(){
+					var boardId = getParameterByName("id");
+					$.get("topic_listTopicsOfBoard",{"board.id":boardId},function(data){
+						for(var i=0;i<data.rows.length;i++){
+							var topic = data.rows[i];
+							var model = $("#topic-row-model").clone();
+							model.attr("id","topic-"+topic.id);
+							model.appendTo($("#topic-list-table"));
+							model.find("[content='topic-title']").text(topic.title);
+							model.find("[content='topic-title']").attr("href","topic.html?id="+topic.id);
+							model.find("[content='topic-replies-count']").text(topic.repliesCount);
+							model.find("[content='topic-time']").text(topic.time);
+							model.find("[content='topic-author']").text(topic.user.username);
+							model.fadeIn();
+						}
+					});
 				});
 		</script>
 	</main>

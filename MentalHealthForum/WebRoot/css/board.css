@@ -3,15 +3,22 @@
 	color: #33a6d5;
 	text-shadow: 0px 0px 4px #b4c4f3;
 }
+#list-title:hover {
+	box-shadow: none !important;
+	z-index: 0 !important;
+	cursor: default !important;
+}
 
 #post-list-div>.table>tbody>tr:hover {
 	box-shadow: 0px 0px 20px 0px #33a6d5;
 	z-index: 1;
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 
-#list-title:hover {
-	box-shadow: none;
-	z-index: 0;
-	cursor: default;
+#post-list-div a{
+	color: inherit;
+}
+
+#post-list-div a:hover{
+	color: inherit;
 }

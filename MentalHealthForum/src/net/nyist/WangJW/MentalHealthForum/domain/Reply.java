@@ -89,7 +89,7 @@ public class Reply implements java.io.Serializable {
 		this.content = content;
 	}
 
-	@JSONField(format="yyyy-MM-dd hh:mm:ss")
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	public Timestamp getTime() {
 		return this.time;
 	}
