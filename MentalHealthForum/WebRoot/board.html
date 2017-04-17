@@ -60,6 +60,9 @@
 					</table>
 				</div>
 				<div id="new-post-div" style="display: none; padding: 6px;">
+					<div class="forbit-submit-mask">
+						<p></p>
+					</div>
 					<form action="#" id="new-topic-form" novalidate>
 						<div class="alert alert-dismissable" id="new-topic-result" style="display: none;">
 							<button type="button" class="close" data-dismiss="alert"
@@ -83,7 +86,7 @@
 					</form>
 					<button type="button" id="new-topic-submit" class="btn btn-success btn-lg btn-block">发帖</button>
 					<button type="button" id="new-topic-submit-anonymous" class="btn btn-primary btn-lg btn-block">匿名发帖</button>
-			</div>
+				</div>
 			</div>
 			<nav class="bottom-page" style="text-align: center; ">
 				<ul class="pagination ">
@@ -120,17 +123,18 @@
 						btn.text("取消发帖");
 						btn.removeClass("btn-primary");
 						btn.addClass("btn-danger");
-						$("#post-list-div").fadeOut(function(){
-							$("#new-post-div").fadeIn();
+						$("#post-list-div").fadeOut(500,function(){
+							$("#new-post-div").fadeIn(500);
 							$("#new-post-title").focus();
+							updateForbitSubmitMask();
 						});
 						$(".bottom-page").hide();
 					}else{
 						btn.text("发帖");
 						btn.removeClass("btn-danger");
 						btn.addClass("btn-primary");
-						$("#new-post-div").fadeOut(function(){
-							$("#post-list-div").fadeIn();
+						$("#new-post-div").fadeOut(500,function(){
+							$("#post-list-div").fadeIn(500);
 						});
 						btn.blur();
 						$(".bottom-page").show();

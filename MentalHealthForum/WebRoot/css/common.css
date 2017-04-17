@@ -36,3 +36,29 @@ label {
 a:hover{
 	text-decoration: none;
 }
+
+.forbit-submit-mask{
+	z-index: 2;
+	background-color: rgba(0,0,0,0.5);
+	position: absolute;
+	display: none;
+}
+
+.forbit-submit-mask p{
+		position  : absolute;
+		top       : 50%;
+		left      : 50%;
+		transform : translate(-50%,-50%);
+		text-align: center;
+		color :#fff;
+		font-size: 40px;
+		font-weight: bold;
+}
+
+.forbit-submit-mask a{
+	color: cyan;
+}
+
+.forbit-submit-mask a:hover{
+	cursor: pointer;
+}

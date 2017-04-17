@@ -23,7 +23,7 @@ public class User implements java.io.Serializable {
 	private String gender = "未填写";
 	private Short age;
 	private String avatar;
-	private Short status = 0;
+	private Short status = 1;
 	private Boolean isAdmin = false;
 	private Set topics = new TreeSet<>();
 	private Set replies = new TreeSet<>();
