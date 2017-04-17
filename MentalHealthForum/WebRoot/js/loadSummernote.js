@@ -4,4 +4,5 @@ $(function() {
 		height: 200,
 		lang: 'zh-CN'
 	});
+	console.log("summernote初始化");
 });

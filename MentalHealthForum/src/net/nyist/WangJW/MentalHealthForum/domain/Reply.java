@@ -8,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * Reply entity. @author MyEclipse Persistence Tools
  */
 
-public class Reply implements java.io.Serializable {
+public class Reply implements java.io.Serializable, Comparable<Reply>{
 
 	// Fields
 
@@ -113,6 +113,12 @@ public class Reply implements java.io.Serializable {
 
 	public void setStatus(Short status) {
 		this.status = status;
+	}
+
+	@Override
+	public int compareTo(Reply o) {
+		int result = this.floor - o.floor;
+		return (int) (result == 0 ? this.id - o.getId() : result);
 	}
 
 }

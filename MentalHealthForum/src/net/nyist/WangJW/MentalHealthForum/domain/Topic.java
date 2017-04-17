@@ -2,7 +2,9 @@ package net.nyist.WangJW.MentalHealthForum.domain;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -10,7 +12,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  * Topic entity. @author MyEclipse Persistence Tools
  */
 
-public class Topic implements java.io.Serializable {
+public class Topic implements java.io.Serializable, Comparable<Topic> {
 
 	// Fields
 
@@ -22,7 +24,7 @@ public class Topic implements java.io.Serializable {
 	private Timestamp time = new Timestamp(System.currentTimeMillis());
 	private Boolean anonymous = false;
 	private Short status = 0;
-	private Set replies = new HashSet(0);
+	private Set replies = new TreeSet<>();
 
 	// Constructors
 
@@ -118,6 +120,7 @@ public class Topic implements java.io.Serializable {
 	}
 
 	public Set getReplies() {
+		
 		return this.replies;
 	}
 
@@ -133,6 +136,11 @@ public class Topic implements java.io.Serializable {
 	public String toString() {
 		return "Topic [id=" + id + ", user=" + user + ", title=" + title + ", content=" + content + ", board=" + board
 				+ ", time=" + time + ", anonymous=" + anonymous + ", status=" + status + ", replies=" + replies.size() + "]";
+	}
+
+	@Override
+	public int compareTo(Topic o) {
+		return (int) (o.getId() - this.id);
 	}
 
 	

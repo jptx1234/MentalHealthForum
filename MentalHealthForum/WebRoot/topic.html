@@ -58,7 +58,7 @@
 								<div class="content-control"><span content="topic-time"></span>&nbsp;<span content="control" style="display: none;"><a href="#">删除</a> | <a href="#">封禁</a></span></div>
 							</td>
 						</tr>
-						<tr id="reply-model" style="display: none;">
+						<tr id="model-reply" style="display: none;">
 							<td class="user-info">
 									<img width="100px" height="100px" content="reply-author-avatar"/>
 									<div class="author-name" content="reply-author"></div>
@@ -70,15 +70,27 @@
 								<div class="content-control"><span content="reply-time"></span>&nbsp;<span content="control" style="display: none;"><a href="#">删除</a> | <a href="#">封禁</a></span></div>
 							</td>
 						</tr>
+					</table>
 				</div>
 			</div>
 			<div id="reply-div" style="display: none;margin-top: 50px;">
-				<form action="#" novalidate>
+				<form id="new-reply-form" action="#" novalidate>
+					<div class="alert alert-dismissable" id="new-reply-result" style="display: none;">
+						<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">
+							&times;
+						</button>
+						<span></span>
+					</div>
 					<div class="form-group ">
-						<textarea id="new-reply" name="reply" class="summernote"></textarea>
+						<input type="hidden" name="topic.id" content="newreply-topic-id" />
+						<input type="hidden" name="anonymous" value="false" />
+						<textarea id="new-reply" name="content" class="summernote"></textarea>
 					</div>
 				</form>
-				<button type="button" id="new-reply-submit" class="btn btn-primary btn-lg btn-block">发表回复</button></div>
+				<button type="button" id="new-reply-submit" class="btn btn-success btn-lg btn-block">发表回复</button>
+				<button type="button" id="new-reply-submit-anonymous" class="btn btn-primary btn-lg btn-block">发表匿名回复</button>
+			</div>
 			<script type="text/javascript">
 				$("#new-reply-submit").click(function(){
 					var markupStr = $('#new-reply').summernote('code');
@@ -88,12 +100,14 @@
 			</script>
 			<script type="text/javascript" src="js/loadSummernote.js" ></script>
 			<script type="text/javascript">
-				$(function(){
+				function loadTopic(){
 					var postId = getParameterByName("id");
 					
 					$.get("topic_findTopicById",{"id" : postId},function(topic){
 						$("[content='topic-title']").text(topic.title);
+						$("[content='newreply-topic-id']").val(topic.id);
 						$("[content='topic-board']").text(topic.board.name);
+						$("[content='topic-board']").attr("href","board.html?id="+topic.board.id);
 						$("[content='topic-content']").html(topic.content);
 						$("[content='topic-author']").text(topic.user.username);
 						$("[content='topic-author-role']").text( topic.user.isAdmin ? "教师" : "学生");
@@ -101,14 +115,14 @@
 						$("[content='topic-time']").text(topic.time);
 						for(var i=0;i<topic.replies.length;i++){
 							var reply = topic.replies[i];
-							var model = $("#reply-model").clone();
+							var model = $("#model-reply").clone();
 							var replyTrId = "reply-"+reply.id;
 							model.attr("id",replyTrId);
 							model.appendTo($("#topic-table"));
 							model.find("[content='reply-author']").text(reply.user.username);
 							model.find("[content='reply-author-avatar']").attr("src","avatars/"+reply.user.avatar);
 							model.find("[content='reply-author-role']").text( reply.user.isAdmin ? "教师" : "学生");
-							model.find("[content='reply-content']").text(reply.content);
+							model.find("[content='reply-content']").html(reply.content);
 							model.find("[content='reply-floor']").text(reply.floor+"楼");
 							model.find("[content='reply-time']").text(reply.time);
 							model.show();
@@ -118,7 +132,76 @@
 							$("[content='control']").show();
 						}
 					},"json");
+				}
+				function reloadTopic(){
+					$("#topic-table tr[id^='reply-']").remove();
+					$("[content='topic-content']").html("内容重新加载中");
+					$("[content='topic-title']").text("标题重新加载中");
+					loadTopic();
+				}
+				$(function(){
+					loadTopic();
+					$("#new-reply-submit").click(function(){
+						$("#new-reply-form input[name='anonymous']").val("false");
+						submitReply();
+					});
+					$("#new-reply-submit-anonymous").click(function(){
+						$("#new-reply-form input[name='anonymous']").val("true");
+						submitReply();
+					});
 				});
+				function submitReply(){
+					$("#new-reply-form .help-block").text("");
+					$("#new-reply-form .has-error").removeClass("has-error");
+					$("#new-reply-result").hide();
+					var topicContent = $("#new-reply-form .summernote").summernote("code");
+					if(topicContent.length <= 0){
+						$("#new-topic-form-content-group").addClass("has-error");
+						$("#new-topic-form-content-group .help-block").text("回复内容不能为空");
+						return;
+					}
+					var formdata = $("#new-reply-form").serialize();
+					$("#new-reply-form :input").attr("disabled","disabled");
+					$("#new-reply-submit").attr("disabled","disabled");
+					$("#new-reply-submit-anonymous").attr("disabled","disabled");
+					$('#new-reply-form .summernote').summernote("disable");
+					$.ajax({
+						url:"reply_saveReply",
+						type:"POST",
+						dataType:"json",
+						data:formdata,
+						success:function(data){
+							if(data.status == 1){
+								$("#new-reply-result").removeClass("alert-danger");
+								$("#new-reply-result").addClass("alert-success");
+								$("#new-reply-result span").text(data.msg);
+								setTimeout(function(){
+									reloadTopic();
+									$('#new-reply-form .summernote').summernote('reset');
+									enableReply();
+									$("#new-reply-result").hide();
+								},2000);
+							}else{
+								$("#new-reply-result").addClass("alert-danger");
+								$("#new-reply-result span").text(data.msg);
+								enableReply();
+							}
+							$("#new-reply-result").show();
+						},
+						error:function(){
+							$("#new-reply-result").addClass("alert-danger");
+							$("#new-reply-result span").text("回复失败，请稍后重试");
+							enableReply();
+							$("#new-reply-result").show();
+						}
+					});
+				}
+				function enableReply(){
+					$("#new-reply-form :input").removeAttr("disabled");
+					$("#new-reply-submit").removeAttr("disabled");
+					$("#new-reply-submit-anonymous").removeAttr("disabled");
+					$('#new-reply-form .summernote').summernote("enable");
+				}
 			</script>
 		</main>
 	</body>

@@ -87,6 +87,10 @@ public class TopicAction extends BaseAction<Topic> {
 			responseResultObject(0, "标题不能为空");
 			return NONE;
 		}
+		if (StringUtils.isBlank(model.getContent())) {
+			responseResultObject(0, "内容不能为空");
+			return NONE;
+		}
 		if (model.getBoard() == null || model.getBoard().getId() == null) {
 			responseResultObject(0, "获取板块信息失败，请刷新网页后重新发帖");
 			return NONE;

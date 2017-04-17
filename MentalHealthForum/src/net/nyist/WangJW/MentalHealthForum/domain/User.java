@@ -2,6 +2,7 @@ package net.nyist.WangJW.MentalHealthForum.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -24,8 +25,8 @@ public class User implements java.io.Serializable {
 	private String avatar;
 	private Short status = 0;
 	private Boolean isAdmin = false;
-	private Set topics = new HashSet(0);
-	private Set replies = new HashSet(0);
+	private Set topics = new TreeSet<>();
+	private Set replies = new TreeSet<>();
 
 	// Constructors
 
