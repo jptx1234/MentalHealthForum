@@ -59,7 +59,14 @@
 							<td class="post-content"> 
 								<div class="reply-index">1楼</div>
 								<div content="topic-content">内容加载中</div>
-								<div class="content-control"><span content="topic-time"></span>&nbsp;<span content="control" style="display: none;"><a href="javascript:void(0)" content="topic-delete">删除</a> | <a href="javascript:void(0)">封禁</a></span></div>
+								<div class="content-control">
+									<span content="topic-time"></span>&nbsp;
+									<span content="control" style="display: none;">
+										<a href="javascript:void(0)" content="topic-delete">删除</a> | 
+										<a href="javascript:void(0)" content="topic-good">加精</a> | 
+										<a href="javascript:void(0)">封禁</a>
+									</span>
+								</div>
 							</td>
 						</tr>
 						<tr id="model-reply" style="display: none;">
@@ -121,6 +128,7 @@
 							$("[content='topic-label']").text(topic.label);
 							$("[content='topic-label']").show();
 						}
+						$("[content='topic-good']").click({"id":topic.id,"label":"精品"},addLabel);
 						$("[content='newreply-topic-id']").val(topic.id);
 						$("[content='topic-board']").text(topic.board.name);
 						$("[content='topic-board']").attr("href","board.html?id="+topic.board.id);
@@ -130,6 +138,7 @@
 						$("[content='topic-author-avatar']").attr("src","avatars/"+topic.user.avatar);
 						$("[content='topic-time']").text(topic.time);
 						$("[content='topic-delete']").click({"id":topic.id,"type":"主题帖","url":"topic_deleteTopic"},deleteMe);
+						
 						for(var i=0;i<topic.replies.length;i++){
 							var reply = topic.replies[i];
 							var model = $("#model-reply").clone();
@@ -249,7 +258,7 @@
 										        reloadTopic();
 										    },
 										});
-					            	});
+					            	},"json");
 					            }
 					        },
 					        close:{
@@ -259,6 +268,27 @@
 					        } 
 					    }
 					});
+				}
+				function addLabel(event){
+					event.stopPropagation();
+					$.post("topic_addLabel",{"id":event.data.id,"label":event.data.label},function(data){
+						var title;
+	            		var content = data.msg;
+	            		if(data.status == 1){
+	            			title="成功";
+	            		}else{
+	            			title="失败";
+	            		}
+	            		
+	            		$.dialog({
+						    title: title,
+						    content: content,
+						    backgroundDismiss: true,
+						    onDestroy: function () {
+						        reloadTopic();
+						    },
+						});
+					},"json");
 				}
 				function showTopicNotFound(){
 					$.confirm({

@@ -127,7 +127,11 @@ public class Topic implements java.io.Serializable, Comparable<Topic> {
 	}
 
 	public void setLabel(String label) {
-		this.label = label;
+		if (label == null || label.length() == 0) {
+			this.label = null;
+		}else {
+			this.label = label;
+		}
 	}
 
 	public Set getReplies() {

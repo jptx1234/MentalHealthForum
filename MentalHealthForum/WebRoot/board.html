@@ -192,11 +192,18 @@
 			});
 			$(function(){
 				var boardId = getParameterByName("id");
+				var page = getParameterByName("page");
 				$.get("board_findBoardById",{"id" : boardId},function(data){
 					$("[content='board-id']").val(data.id);
 					$("[content='board-name']").text(data.name);
 				});
-				$.get("topic_listTopicsOfBoard",{"board.id":boardId},function(data){
+				$.get("topic_listTopicsOfBoard",{"board.id":boardId,"page":page},function(data){
+					if(data == undefined || data.total == undefined){
+						//如果没收到数据，可能为null，这里使用 data == undefined 可同时判断为null和undefined的情况
+						//同时还会判断total是否没有传过来，如果没有，则说明服务器可能返回了异常页面
+						showBoardNotFound();
+						return;
+					}
 					for(var i=0;i<data.rows.length;i++){
 						var topic = data.rows[i];
 						var model = $("#topic-row-model").clone();
@@ -218,24 +225,19 @@
 			});
 			function showPage(total,current){
 				var totalPage = parseInt((total + 9) / 10);
+				console.log("total:"+totalPage+",current:"+current);
 				var startPage;
 				var endPage;
 				if(current < totalPage / 2){
-					startPage = Math.max(totalPage - 2, 1);
+					startPage = Math.max(current - 2, 1);
 					endPage = Math.min(startPage + 4, totalPage);
 				}else{
 					endPage = Math.min(current + 2, totalPage);
 					startPage = Math.max(endPage - 4, 1);
 				}
 				var pageArray = new Array();
-				if(startPage != 1){
-					pageArray.push(1);
-				}
 				for(var i=startPage; i <= endPage; i++){
 					pageArray.push(i);
-				}
-				if(endPage != totalPage){
-					pageArray.push(totalPage);
 				}
 				console.log(pageArray.join(","));
 				var baseURL = window.location.href.replace(/&*page=(([0-9])*)/g,"");
@@ -252,12 +254,21 @@
 					pageLinkObj.appendTo(liObj);
 					liObj.appendTo(pageObj);
 				}
+				
+				if(current-2 > 1){
+					pageObj.prepend("<li><a>...</a></li>");
+					pageObj.prepend("<li><a href='"+baseURL+"&page=1'>首页</a></li>");
+				}
 				if(current != 1){
 					var liObj = $("<li></li>");
 					var pageLinkObj = $("<a>&laquo;</a>");
 					pageLinkObj.attr("href",baseURL+"&page="+(current-1));
 					pageLinkObj.appendTo(liObj);
 					liObj.prependTo(pageObj);
+				}
+				if(current+2 < totalPage){
+					pageObj.append("<li><a>...</a></li>");
+					pageObj.append("<li><a href='"+baseURL+"&page="+totalPage+"'>尾页</a></li>");
 				}
 				if(current != totalPage){
 					var liObj = $("<li></li>");
@@ -267,6 +278,26 @@
 					liObj.appendTo(pageObj);
 				}
 			}
+			function showBoardNotFound(){
+					$.confirm({
+					    title: '',
+					    content: '当前板块不存在或已被删除，5秒后自动跳转到首页',
+					    autoClose: 'goNow|5000',
+					    buttons: {
+					        goNow: {
+					            text: '立即跳转',
+					            btnClass: 'btn-green',
+					            action: function () {
+					            	var link=$("<a></a>");
+					            	link.attr("href","index.html");
+					            	link.hide();
+					            	link.appendTo($("main"));
+					            	link.click();
+					            }
+					        }
+					    }
+					});
+				}
 			loadSummernote();
 		</script>
 	</main>

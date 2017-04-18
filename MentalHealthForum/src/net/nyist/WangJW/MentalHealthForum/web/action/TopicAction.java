@@ -129,6 +129,15 @@ public class TopicAction extends BaseAction<Topic> {
 	}
 	
 	public String addLabel(){
+		User user = CommonUtils.getLoginUser();
+		if (user == null || !user.getIsAdmin()) {
+			responseResultObject(0, "无操作权限");
+			return NONE;
+		}
+		if (model.getId() == null) {
+			responseResultObject(0, "帖子参数传递失败");
+			return NONE;
+		}
 		try {
 			topicService.addLabel(model.getId(),model.getLabel());
 			responseResultObject(1, "成功把帖子设置为："+model.getLabel());
