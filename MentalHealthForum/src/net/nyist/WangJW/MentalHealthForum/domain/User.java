@@ -22,7 +22,7 @@ public class User implements java.io.Serializable {
 	private String password;
 	private String gender = "未填写";
 	private Short age;
-	private String avatar;
+	private String avatar = "example.jpg";
 	private Short status = 1;
 	private Boolean isAdmin = false;
 	private Set topics = new TreeSet<>();
@@ -103,7 +103,7 @@ public class User implements java.io.Serializable {
 	}
 
 	public void setAvatar(String avatar) {
-		this.avatar = avatar;
+//		this.avatar = avatar;
 	}
 
 	public Short getStatus() {
