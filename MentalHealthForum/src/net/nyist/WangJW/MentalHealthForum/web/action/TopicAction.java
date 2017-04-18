@@ -80,6 +80,7 @@ public class TopicAction extends BaseAction<Topic> {
 			responseResultObject(0, "用户尚未登录");
 			return NONE;
 		}
+		user = userService.findById(user.getId());
 		if (user.getStatus() == 0) {
 			responseResultObject(0, "用户被封禁，无法发帖");
 			return NONE;
@@ -110,7 +111,10 @@ public class TopicAction extends BaseAction<Topic> {
 	
 	public String deleteTopic(){
 		User user = CommonUtils.getLoginUser();
-		if (user == null || !user.getIsAdmin()) {
+		if (user != null) {
+			user = userService.findById(user.getId());
+		}
+		if (user == null || !user.getIsAdmin() || user.getStatus() == 0) {
 			responseResultObject(0, "无权删帖");
 			return NONE;
 		}
@@ -130,7 +134,10 @@ public class TopicAction extends BaseAction<Topic> {
 	
 	public String addLabel(){
 		User user = CommonUtils.getLoginUser();
-		if (user == null || !user.getIsAdmin()) {
+		if (user != null) {
+			user = userService.findById(user.getId());
+		}
+		if (user == null || !user.getIsAdmin() || user.getStatus() == 0) {
 			responseResultObject(0, "无操作权限");
 			return NONE;
 		}

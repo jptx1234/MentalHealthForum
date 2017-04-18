@@ -90,6 +90,9 @@ public class UserAction extends BaseAction<User> {
 	
 	public String forbitUser(){
 		User user = CommonUtils.getLoginUser();
+		if (user != null) {
+			user = userService.findById(user.getId());
+		}
 		if (user == null || !user.getIsAdmin()) {
 			responseResultObject(0, "无操作权限");
 			return NONE;

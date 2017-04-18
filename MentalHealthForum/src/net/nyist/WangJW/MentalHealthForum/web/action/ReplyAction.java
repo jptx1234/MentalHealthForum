@@ -34,6 +34,7 @@ public class ReplyAction extends BaseAction<Reply> {
 			responseResultObject(0, "用户尚未登录");
 			return NONE;
 		}
+		user = userService.findById(user.getId());
 		if (user.getStatus() == 0) {
 			responseResultObject(0, "用户被封禁，无法回复");
 			return NONE;
@@ -63,7 +64,10 @@ public class ReplyAction extends BaseAction<Reply> {
 	
 	public String deleteReply(){
 		User user = CommonUtils.getLoginUser();
-		if (user == null || !user.getIsAdmin()) {
+		if (user != null) {
+			user = userService.findById(user.getId());
+		}
+		if (user == null || !user.getIsAdmin() || user.getStatus() == 0) {
 			responseResultObject(0, "无权删帖");
 			return NONE;
 		}

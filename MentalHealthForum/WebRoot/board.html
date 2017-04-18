@@ -32,7 +32,7 @@
 		<div class="center-block post-list">
 			<ol class="breadcrumb">
 				<li>
-					<a href="#">首页</a>
+					<a href="index.html">首页</a>
 				</li>
 				<li class="active" content="board-name">板块加载中</li>
 			</ol>
@@ -270,7 +270,7 @@
 					pageObj.append("<li><a>...</a></li>");
 					pageObj.append("<li><a href='"+baseURL+"&page="+totalPage+"'>尾页</a></li>");
 				}
-				if(current != totalPage){
+				if(current != totalPage && totalPage != 0){
 					var liObj = $("<li></li>");
 					var pageLinkObj = $("<a>&raquo;</a>");
 					pageLinkObj.attr("href",baseURL+"&page="+(current+1));

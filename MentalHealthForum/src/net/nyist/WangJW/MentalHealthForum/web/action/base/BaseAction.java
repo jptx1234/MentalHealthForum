@@ -33,6 +33,13 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 		return model;
 	}
 	
+	public void setPage(String page){
+		try {
+			setPage(Integer.parseInt(page));
+		} catch (Exception e) {
+		}
+	}
+	
 	public void setPage(int page){
 		pageBean.setCurrentPage(page);
 	}
