@@ -17,6 +17,11 @@
 	background-color: rgba(51, 166, 213, 0.07);
 }
 
+.user-forbidden{
+	background-color: rgba(226, 28, 28, 0.17);
+}
+
+
 .author-name {
 	margin-top: 10px;
 }

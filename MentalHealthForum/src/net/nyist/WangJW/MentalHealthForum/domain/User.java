@@ -106,7 +106,6 @@ public class User implements java.io.Serializable {
 		this.avatar = avatar;
 	}
 
-	@JSONField(serialize=false)
 	public Short getStatus() {
 		return this.status;
 	}

@@ -64,7 +64,7 @@
 									<span content="control" style="display: none;">
 										<a href="javascript:void(0)" content="topic-delete">删除</a> | 
 										<a href="javascript:void(0)" content="topic-good">加精</a> | 
-										<a href="javascript:void(0)">封禁</a>
+										<a href="javascript:void(0)" content="topic-forbit-user">封禁</a>
 									</span>
 								</div>
 							</td>
@@ -78,7 +78,13 @@
 							<td class="post-content"> 
 								<div class="reply-index" content="reply-floor"></div>
 								<div content="reply-content"></div>
-								<div class="content-control"><span content="reply-time"></span>&nbsp;<span content="control" style="display: none;"><a href="javascript:void(0)" content="reply-delete">删除</a> | <a href="javascript:void(0)">封禁</a></span></div>
+								<div class="content-control">
+									<span content="reply-time"></span>&nbsp;
+									<span content="control" style="display: none;">
+										<a href="javascript:void(0)" content="reply-delete">删除</a> | 
+										<a href="javascript:void(0)" content="reply-user-forbit">封禁</a>
+									</span>
+								</div>
 							</td>
 						</tr>
 					</table>
@@ -133,18 +139,27 @@
 						$("[content='topic-board']").text(topic.board.name);
 						$("[content='topic-board']").attr("href","board.html?id="+topic.board.id);
 						$("[content='topic-content']").html(topic.content);
+						if(topic.user.status == 0){
+							$("td.user-info:has([content=topic-author])").addClass("user-forbidden");
+							topic.user.username = "【被封禁】"+topic.user.username;
+						}
 						$("[content='topic-author']").text(topic.user.username);
 						$("[content='topic-author-role']").text( topic.user.isAdmin ? "教师" : "学生");
 						$("[content='topic-author-avatar']").attr("src","avatars/"+topic.user.avatar);
 						$("[content='topic-time']").text(topic.time);
 						$("[content='topic-delete']").click({"id":topic.id,"type":"主题帖","url":"topic_deleteTopic"},deleteMe);
-						
+						console.log(topic.user.id+"是帖子作者ID");
+						$("[content='topic-forbit-user']").click({"id":topic.user.id},forbitUser);
 						for(var i=0;i<topic.replies.length;i++){
 							var reply = topic.replies[i];
 							var model = $("#model-reply").clone();
 							var replyTrId = "reply-"+reply.id;
 							model.attr("id",replyTrId);
 							model.appendTo($("#topic-table"));
+							if(topic.user.status == 0){
+								model.find("td.user-info:has([content=reply-author])").addClass("user-forbidden");
+								topic.user.username = "【被封禁】"+reply.user.username;
+							}
 							model.find("[content='reply-author']").text(reply.user.username);
 							model.find("[content='reply-author-avatar']").attr("src","avatars/"+reply.user.avatar);
 							model.find("[content='reply-author-role']").text( reply.user.isAdmin ? "教师" : "学生");
@@ -152,6 +167,7 @@
 							model.find("[content='reply-floor']").text(reply.floor+"楼");
 							model.find("[content='reply-time']").text(reply.time);
 							model.find("[content='reply-delete']").click({"id":reply.id,"type":"回复","url":"reply_deleteReply"},deleteMe);
+							model.find("[content='reply-user-forbit']").click({"id":reply.user.id},forbitUser);
 							model.show();
 						}
 						
@@ -289,6 +305,46 @@
 						    },
 						});
 					},"json");
+				}
+				function forbitUser(event){
+					$.confirm({
+					    title: '封禁确认',
+					    content: '确认要封禁此用户吗',
+					    draggable: true,
+					    type: 'red',
+					    typeAnimated: true,
+					    buttons: {
+					        confirm: {
+					            text: '封禁',
+					            btnClass: 'btn-red',
+					            action: function(){
+					            	$.post("user_forbitUser",{"id":event.data.id},function(data){
+										var title;
+					            		var content = data.msg;
+					            		if(data.status == 1){
+					            			title="成功";
+					            		}else{
+					            			title="失败";
+					            		}
+					            		
+					            		$.dialog({
+										    title: title,
+										    content: content,
+										    backgroundDismiss: true,
+										    onDestroy: function () {
+										        reloadTopic();
+										    },
+										});
+									},"json");
+					            }
+					        },
+					        close:{
+					        	text: '取消',	
+					        	action: function () {
+					        	}
+					        } 
+					    }
+					});
 				}
 				function showTopicNotFound(){
 					$.confirm({

@@ -10,4 +10,6 @@ public interface IUserService {
 
 	User findById(Long id);
 
+	void forbit(Long id);
+
 }

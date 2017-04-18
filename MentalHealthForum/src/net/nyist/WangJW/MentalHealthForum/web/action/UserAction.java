@@ -88,7 +88,29 @@ public class UserAction extends BaseAction<User> {
 		return NONE;
 	}
 	
-	
+	public String forbitUser(){
+		User user = CommonUtils.getLoginUser();
+		if (user == null || !user.getIsAdmin()) {
+			responseResultObject(0, "无操作权限");
+			return NONE;
+		}
+		if (model.getId() == null) {
+			responseResultObject(0, "用户参数传递失败");
+			return NONE;
+		}
+		if (user.getStatus() == 0) {
+			responseResultObject(0, "您已被封禁，无法操作");
+			return NONE;
+		}
+		try {
+			userService.forbit(model.getId());
+			responseResultObject(1, "成功封禁此用户");
+		} catch (Exception e) {
+			responseResultObject(1, "封禁时出现异常");
+		}
+		
+		return NONE;
+	}
 	
 	
 	

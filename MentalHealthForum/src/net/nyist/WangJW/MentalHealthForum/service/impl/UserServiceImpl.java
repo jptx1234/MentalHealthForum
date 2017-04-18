@@ -42,6 +42,12 @@ public class UserServiceImpl implements IUserService {
 	public User findById(Long id) {
 		return userDao.findById(id);
 	}
+
+	@Override
+	public void forbit(Long id) {
+		User user = userDao.findById(id);
+		user.setStatus((short)0);
+	}
 	
 	
 	
