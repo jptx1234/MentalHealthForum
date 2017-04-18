@@ -11,12 +11,15 @@
 		<link rel="stylesheet" href="css/board.css" />
 		<link rel="stylesheet" href="css/index.css" />
 		<link rel="stylesheet" href="css/post.css" />
+		<link rel="stylesheet" href="css/jquery-confirm.min.css" />
 		<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/summernote.min.js"></script>
 		<script type="text/javascript" src="js/summernote-zh-CN.min.js"></script>
 		<script type="text/javascript" src="js/loadNavAndFooter.js" ></script>
+		<script type="text/javascript" src="js/jquery-confirm.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/loadSummernote.js" ></script>
 	</head>
 
 	<body>
@@ -39,9 +42,10 @@
 			</div>
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<div class="panel-title" content="topic-title">
+					<div class="panel-title" content="topic-title" style="display: inline-block;">
 						标题加载中
 					</div>
+					<span class="label label-success" content="topic-label" style="display: none;"></span>
 				</div>
 				
 				<div class="panel-body">
@@ -55,7 +59,7 @@
 							<td class="post-content"> 
 								<div class="reply-index">1楼</div>
 								<div content="topic-content">内容加载中</div>
-								<div class="content-control"><span content="topic-time"></span>&nbsp;<span content="control" style="display: none;"><a href="#">删除</a> | <a href="#">封禁</a></span></div>
+								<div class="content-control"><span content="topic-time"></span>&nbsp;<span content="control" style="display: none;"><a href="javascript:void(0)" content="topic-delete">删除</a> | <a href="javascript:void(0)">封禁</a></span></div>
 							</td>
 						</tr>
 						<tr id="model-reply" style="display: none;">
@@ -67,7 +71,7 @@
 							<td class="post-content"> 
 								<div class="reply-index" content="reply-floor"></div>
 								<div content="reply-content"></div>
-								<div class="content-control"><span content="reply-time"></span>&nbsp;<span content="control" style="display: none;"><a href="#">删除</a> | <a href="#">封禁</a></span></div>
+								<div class="content-control"><span content="reply-time"></span>&nbsp;<span content="control" style="display: none;"><a href="javascript:void(0)" content="reply-delete">删除</a> | <a href="javascript:void(0)">封禁</a></span></div>
 							</td>
 						</tr>
 					</table>
@@ -101,13 +105,22 @@
 				$("#reply-div").insertAfter($(".panel"));
 				$("#reply-div").show();
 			</script>
-			<script type="text/javascript" src="js/loadSummernote.js" ></script>
 			<script type="text/javascript">
 				function loadTopic(){
 					var postId = getParameterByName("id");
 					
 					$.get("topic_findTopicById",{"id" : postId},function(topic){
+						if(topic == undefined || topic.id == undefined){
+							//如果没收到数据，可能为null，这里使用 topic == undefined 可同时判断为null和undefined的情况
+							//同时还会判断id是否没有传过来，如果没有，则说明服务器可能返回了异常页面
+							showTopicNotFound();
+							return;
+						}
 						$("[content='topic-title']").text(topic.title);
+						if(topic.label != undefined && topic.label != "null"){
+							$("[content='topic-label']").text(topic.label);
+							$("[content='topic-label']").show();
+						}
 						$("[content='newreply-topic-id']").val(topic.id);
 						$("[content='topic-board']").text(topic.board.name);
 						$("[content='topic-board']").attr("href","board.html?id="+topic.board.id);
@@ -116,6 +129,7 @@
 						$("[content='topic-author-role']").text( topic.user.isAdmin ? "教师" : "学生");
 						$("[content='topic-author-avatar']").attr("src","avatars/"+topic.user.avatar);
 						$("[content='topic-time']").text(topic.time);
+						$("[content='topic-delete']").click({"id":topic.id,"type":"主题帖","url":"topic_deleteTopic"},deleteMe);
 						for(var i=0;i<topic.replies.length;i++){
 							var reply = topic.replies[i];
 							var model = $("#model-reply").clone();
@@ -128,6 +142,7 @@
 							model.find("[content='reply-content']").html(reply.content);
 							model.find("[content='reply-floor']").text(reply.floor+"楼");
 							model.find("[content='reply-time']").text(reply.time);
+							model.find("[content='reply-delete']").click({"id":reply.id,"type":"回复","url":"reply_deleteReply"},deleteMe);
 							model.show();
 						}
 						
@@ -205,6 +220,67 @@
 					$("#new-reply-submit-anonymous").removeAttr("disabled");
 					$('#new-reply-form .summernote').summernote("enable");
 				}
+				function deleteMe(event){
+					 $.confirm({
+					    title: '删除确认',
+					    content: '确认要删除此'+event.data.type+'吗',
+					    draggable: true,
+					    type: 'red',
+					    typeAnimated: true,
+					    buttons: {
+					        confirm: {
+					            text: '删除',
+					            btnClass: 'btn-red',
+					            action: function(){
+					            	$.post(event.data.url,{"id":event.data.id},function(data){
+					            		var title;
+					            		var content = data.msg;
+					            		if(data.status == 1){
+					            			title="成功";
+					            		}else{
+					            			title="失败";
+					            		}
+					            		
+					            		$.dialog({
+										    title: title,
+										    content: content,
+										    backgroundDismiss: true,
+										    onDestroy: function () {
+										        reloadTopic();
+										    },
+										});
+					            	});
+					            }
+					        },
+					        close:{
+					        	text: '取消',	
+					        	action: function () {
+					        	}
+					        } 
+					    }
+					});
+				}
+				function showTopicNotFound(){
+					$.confirm({
+					    title: '',
+					    content: '当前主题帖不存在或已被删除，5秒后自动跳转到首页',
+					    autoClose: 'goNow|5000',
+					    buttons: {
+					        goNow: {
+					            text: '立即跳转',
+					            btnClass: 'btn-green',
+					            action: function () {
+					            	var link=$("<a></a>");
+					            	link.attr("href","index.html");
+					            	link.hide();
+					            	link.appendTo($("main"));
+					            	link.click();
+					            }
+					        }
+					    }
+					});
+				}
+				loadSummernote();
 			</script>
 		</main>
 	</body>

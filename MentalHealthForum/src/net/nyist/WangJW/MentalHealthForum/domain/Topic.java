@@ -1,8 +1,10 @@
 package net.nyist.WangJW.MentalHealthForum.domain;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -24,7 +26,8 @@ public class Topic implements java.io.Serializable, Comparable<Topic> {
 	private Timestamp time = new Timestamp(System.currentTimeMillis());
 	private Boolean anonymous = false;
 	private Short status = 0;
-	private Set replies = new TreeSet<>();
+	private String label;
+	private Set<Reply> replies = new HashSet<Reply>(0);
 
 	// Constructors
 
@@ -119,13 +122,27 @@ public class Topic implements java.io.Serializable, Comparable<Topic> {
 		this.board = board;
 	}
 
-	public Set getReplies() {
-		
-		return this.replies;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setReplies(Set replies) {
-		this.replies = replies;
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public Set getReplies() {
+		TreeSet<Reply> outReplies = new TreeSet<Reply>();
+		Short statusToOutput = (short)0;
+		for (Reply reply : this.replies) {
+			if (statusToOutput.equals(reply.getStatus())) {
+				outReplies.add(reply);
+			}
+		}
+		return outReplies;
+	}
+
+	public void setReplies(Set<Reply> repliySet) {
+		this.replies = repliySet;
 	}
 	
 	public Integer getRepliesCount(){

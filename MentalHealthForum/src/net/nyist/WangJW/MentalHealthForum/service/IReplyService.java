@@ -6,4 +6,6 @@ public interface IReplyService {
 
 	Long save(Reply model);
 
+	void delete(Long id);
+
 }

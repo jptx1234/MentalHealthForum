@@ -1,7 +1,5 @@
 package net.nyist.WangJW.MentalHealthForum.service;
 
-import java.util.List;
-
 import net.nyist.WangJW.MentalHealthForum.domain.PageBean;
 import net.nyist.WangJW.MentalHealthForum.domain.Topic;
 
@@ -12,5 +10,9 @@ public interface ITopicService {
 	void pageQuery(PageBean pageBean);
 
 	Long save(Topic model);
+
+	void delete(Long id);
+
+	void addLabel(Long id, String label);
 
 }

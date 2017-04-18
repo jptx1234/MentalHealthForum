@@ -34,7 +34,7 @@ public class ReplyAction extends BaseAction<Reply> {
 			responseResultObject(0, "用户尚未登录");
 			return NONE;
 		}
-		if (user.getStatus() == 1) {
+		if (user.getStatus() == 0) {
 			responseResultObject(0, "用户被封禁，无法回复");
 			return NONE;
 		}
@@ -61,5 +61,23 @@ public class ReplyAction extends BaseAction<Reply> {
 		return NONE;
 	}
 	
+	public String deleteReply(){
+		User user = CommonUtils.getLoginUser();
+		if (user == null || !user.getIsAdmin()) {
+			responseResultObject(0, "无权删帖");
+			return NONE;
+		}
+		if (model.getId() == null) {
+			responseResultObject(0, "删帖参数传递失败");
+			return NONE;
+		}
+		try {
+			replyService.delete(model.getId());
+			responseResultObject(1, "删帖成功");
+		} catch (Exception e) {
+			responseResultObject(0, "删帖失败，请稍后重试");
+		}
+		return NONE;
+	}
 	
 }

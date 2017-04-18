@@ -22,6 +22,9 @@
         <property name="time" type="java.sql.Timestamp">
             <column name="time" length="19" />
         </property>
+        <property name="label" type="java.lang.String">
+            <column name="label" />
+        </property>
         <property name="anonymous" type="java.lang.Boolean">
             <column name="anonymous">
                 <comment>0:不匿名，1:匿名</comment>

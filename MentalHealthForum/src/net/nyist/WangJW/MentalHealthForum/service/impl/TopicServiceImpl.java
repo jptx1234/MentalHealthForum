@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,14 @@ public class TopicServiceImpl implements ITopicService {
 
 	@Override
 	public Topic findById(Long i) {
-		return topicDao.findById(i);
+		DetachedCriteria dc = DetachedCriteria.forClass(Topic.class);
+		dc.add(Restrictions.eq("id", i)); 
+		dc.add(Restrictions.eq("status", (short)0));
+		List<Topic> list = topicDao.findByCriteria(dc);
+		if (list != null && list.size() == 1) {
+			return list.get(0);
+		}
+		return null;
 	}
 
 	@Override
@@ -35,6 +43,18 @@ public class TopicServiceImpl implements ITopicService {
 	public Long save(Topic model) {
 		topicDao.save(model);
 		return model.getId();
+	}
+
+	@Override
+	public void delete(Long id) {
+		Topic topic = topicDao.findById(id);
+		topic.setStatus((short) 1);
+	}
+
+	@Override
+	public void addLabel(Long id, String label) {
+		Topic topic = topicDao.findById(id);
+		topic.setLabel(label);
 	}
 
 	

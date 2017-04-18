@@ -11,12 +11,15 @@
 		<link rel="stylesheet" href="css/board.css" />
 		<link rel="stylesheet" href="css/index.css" />
 		<link rel="stylesheet" href="css/post.css" />
+		<link rel="stylesheet" href="css/jquery-confirm.min.css" />
 		<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/summernote.min.js"></script>
 		<script type="text/javascript" src="js/summernote-zh-CN.min.js"></script>
 		<script type="text/javascript" src="js/loadNavAndFooter.js" ></script>
+		<script type="text/javascript" src="js/jquery-confirm.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
+		<script type="text/javascript" src="js/loadSummernote.js" ></script>
 	</head>
 
 	<body>
@@ -52,7 +55,10 @@
 							<th>作者</th>
 						</tr>
 						<tr style="display: none;" id="topic-row-model">
-							<td><a href="#" content="topic-title"></a></td>
+							<td>
+								<a href="#" content="topic-title"></a>
+								<span class="label label-success" content="topic-label" style="display: none;"></span>
+							</td>
 							<td> <span class="badge " content="topic-replies-count"></span></td>
 							<td content="topic-time"></td>
 							<td content="topic-author"></td>
@@ -89,143 +95,179 @@
 				</div>
 			</div>
 			<nav class="bottom-page" style="text-align: center; ">
-				<ul class="pagination ">
-					<li>
-						<a href="# ">&laquo;</a>
-					</li>
-					<li class="active ">
-						<a href="# ">1</a>
-					</li>
-					<li>
-						<a href="# ">2</a>
-					</li>
-					<li>
-						<a href="# ">3</a>
-					</li>
-					<li>
-						<a href="# ">4</a>
-					</li>
-					<li>
-						<a href="# ">5</a>
-					</li>
-					<li>
-						<a href="# ">&raquo;</a>
-					</li>
+				<ul class="pagination" content="board-page">
 				</ul>
 			</nav>
 			
 		</div>
-		<script type="text/javascript" src="js/loadSummernote.js" ></script>
+		
 		<script type="text/javascript">
 			$("#edit-new-post-button").click(function() {
-					var btn = $(this);
-					if(($.trim(btn.text())) == "发帖"){
-						btn.text("取消发帖");
-						btn.removeClass("btn-primary");
-						btn.addClass("btn-danger");
-						$("#post-list-div").fadeOut(500,function(){
-							$("#new-post-div").fadeIn(500);
-							$("#new-post-title").focus();
-							updateForbitSubmitMask();
-						});
-						$(".bottom-page").hide();
-					}else{
-						btn.text("发帖");
-						btn.removeClass("btn-danger");
-						btn.addClass("btn-primary");
-						$("#new-post-div").fadeOut(500,function(){
-							$("#post-list-div").fadeIn(500);
-						});
-						btn.blur();
-						$(".bottom-page").show();
-					}
-				});
-				function submitTopic(){
-					$("#new-topic-form .help-block").text("");
-					$("#new-topic-form .has-error").removeClass("has-error");
-					$("#new-topic-result").hide();
-					if($("#new-topic-form input[name='title']").val().length <= 0){
-						$("#new-topic-form-title-group").addClass("has-error");
-						$("#new-topic-form-title-group .help-block").text("标题不能为空");
-						return;
-					}
-					var topicContent = $("#new-topic-form .summernote").summernote("code");
-					if(topicContent.length <= 0){
-						$("#new-topic-form-content-group").addClass("has-error");
-						$("#new-topic-form-content-group .help-block").text("内容不能为空");
-						return;
-					}
-					var formdata = $("#new-topic-form").serialize();
-					$("#new-topic-form :input").attr("disabled","disabled");
-					$("#new-topic-submit").attr("disabled","disabled");
-					$("#new-topic-submit-anonymous").attr("disabled","disabled");
-					$('#new-topic-form .summernote').summernote("disable");
-					$.ajax({
-						url:"topic_saveTopic",
-						type:"POST",
-						dataType:"json",
-						data:formdata,
-						success:function(data){
-							if(data.status == 1){
-								$("#new-topic-result").removeClass("alert-danger");
-								$("#new-topic-result").addClass("alert-success");
-								$("#new-topic-result span").text(data.msg);
-								var link=$("<a></a>");
-								link.attr("href","topic.html?id="+data.topicId);
-								link.hide();
-								link.appendTo($("main"));
-								setTimeout(function(){
-									link.click();
-								},2000);
-							}else{
-								$("#new-topic-result").addClass("alert-danger");
-								$("#new-topic-result span").text(data.msg);
-								enableSubmit();
-							}
-							$("#new-topic-result").show();
-						},
-						error:function(){
+				var btn = $(this);
+				if(($.trim(btn.text())) == "发帖"){
+					btn.text("取消发帖");
+					btn.removeClass("btn-primary");
+					btn.addClass("btn-danger");
+					$("#post-list-div").fadeOut(500,function(){
+						$("#new-post-div").fadeIn(500);
+						$("#new-post-title").focus();
+						updateForbitSubmitMask();
+					});
+					$(".bottom-page").hide();
+				}else{
+					btn.text("发帖");
+					btn.removeClass("btn-danger");
+					btn.addClass("btn-primary");
+					$("#new-post-div").fadeOut(500,function(){
+						$("#post-list-div").fadeIn(500);
+					});
+					btn.blur();
+					$(".bottom-page").show();
+				}
+			});
+			function submitTopic(){
+				$("#new-topic-form .help-block").text("");
+				$("#new-topic-form .has-error").removeClass("has-error");
+				$("#new-topic-result").hide();
+				if($("#new-topic-form input[name='title']").val().length <= 0){
+					$("#new-topic-form-title-group").addClass("has-error");
+					$("#new-topic-form-title-group .help-block").text("标题不能为空");
+					return;
+				}
+				var topicContent = $("#new-topic-form .summernote").summernote("code");
+				if(topicContent.length <= 0){
+					$("#new-topic-form-content-group").addClass("has-error");
+					$("#new-topic-form-content-group .help-block").text("内容不能为空");
+					return;
+				}
+				var formdata = $("#new-topic-form").serialize();
+				$("#new-topic-form :input").attr("disabled","disabled");
+				$("#new-topic-submit").attr("disabled","disabled");
+				$("#new-topic-submit-anonymous").attr("disabled","disabled");
+				$('#new-topic-form .summernote').summernote("disable");
+				$.ajax({
+					url:"topic_saveTopic",
+					type:"POST",
+					dataType:"json",
+					data:formdata,
+					success:function(data){
+						if(data.status == 1){
+							$("#new-topic-result").removeClass("alert-danger");
+							$("#new-topic-result").addClass("alert-success");
+							$("#new-topic-result span").text(data.msg);
+							var link=$("<a></a>");
+							link.attr("href","topic.html?id="+data.topicId);
+							link.hide();
+							link.appendTo($("main"));
+							setTimeout(function(){
+								link.click();
+							},2000);
+						}else{
 							$("#new-topic-result").addClass("alert-danger");
-							$("#new-topic-result span").text("发帖失败，请稍后重试");
+							$("#new-topic-result span").text(data.msg);
 							enableSubmit();
-							$("#new-topic-result").show();
 						}
-					});
-				}
-				function enableSubmit(){
-					$("#new-topic-form :input").removeAttr("disabled");
-					$("#new-topic-submit").removeAttr("disabled");
-					$("#new-topic-submit-anonymous").removeAttr("disabled");
-					$('#new-topic-form .summernote').summernote("enable");
-				}
-				$("#new-topic-submit").click(function(){
-					submitTopic();
+						$("#new-topic-result").show();
+					},
+					error:function(){
+						$("#new-topic-result").addClass("alert-danger");
+						$("#new-topic-result span").text("发帖失败，请稍后重试");
+						enableSubmit();
+						$("#new-topic-result").show();
+					}
 				});
-				$("#new-topic-submit-anonymous").click(function(){
-					$("#new-topic-form input[name='anonymous']").val("true");
-					submitTopic();
+			}
+			function enableSubmit(){
+				$("#new-topic-form :input").removeAttr("disabled");
+				$("#new-topic-submit").removeAttr("disabled");
+				$("#new-topic-submit-anonymous").removeAttr("disabled");
+				$('#new-topic-form .summernote').summernote("enable");
+			}
+			$("#new-topic-submit").click(function(){
+				submitTopic();
+			});
+			$("#new-topic-submit-anonymous").click(function(){
+				$("#new-topic-form input[name='anonymous']").val("true");
+				submitTopic();
+			});
+			$(function(){
+				var boardId = getParameterByName("id");
+				$.get("board_findBoardById",{"id" : boardId},function(data){
+					$("[content='board-id']").val(data.id);
+					$("[content='board-name']").text(data.name);
 				});
-				$(function(){
-					var boardId = getParameterByName("id");
-					$.get("board_findBoardById",{"id" : boardId},function(data){
-						$("[content='board-id']").val(data.id);
-						$("[content='board-name']").text(data.name);
-					});
-					$.get("topic_listTopicsOfBoard",{"board.id":boardId},function(data){
-						for(var i=0;i<data.rows.length;i++){
-							var topic = data.rows[i];
-							var model = $("#topic-row-model").clone();
-							model.attr("id","topic-"+topic.id);
-							model.appendTo($("#topic-list-table"));
-							model.find("[content='topic-title']").text(topic.title);
-							model.find("[content='topic-title']").attr("href","topic.html?id="+topic.id);
-							model.find("[content='topic-replies-count']").text(topic.repliesCount);
-							model.find("[content='topic-time']").text(topic.time);
-							model.find("[content='topic-author']").text(topic.user.username);
-							model.fadeIn();
+				$.get("topic_listTopicsOfBoard",{"board.id":boardId},function(data){
+					for(var i=0;i<data.rows.length;i++){
+						var topic = data.rows[i];
+						var model = $("#topic-row-model").clone();
+						model.attr("id","topic-"+topic.id);
+						model.appendTo($("#topic-list-table"));
+						model.find("[content='topic-title']").text(topic.title);
+						if(topic.label != undefined && topic.label != "null"){
+							model.find("[content='topic-label']").text(topic.label);
+							model.find("[content='topic-label']").show();
 						}
-					});
+						model.find("[content='topic-title']").attr("href","topic.html?id="+topic.id);
+						model.find("[content='topic-replies-count']").text(topic.repliesCount);
+						model.find("[content='topic-time']").text(topic.time);
+						model.find("[content='topic-author']").text(topic.user.username);
+						model.fadeIn();
+					}
+					showPage(data.total, data.currentPage);
 				});
+			});
+			function showPage(total,current){
+				var totalPage = parseInt((total + 9) / 10);
+				var startPage;
+				var endPage;
+				if(current < totalPage / 2){
+					startPage = Math.max(totalPage - 2, 1);
+					endPage = Math.min(startPage + 4, totalPage);
+				}else{
+					endPage = Math.min(current + 2, totalPage);
+					startPage = Math.max(endPage - 4, 1);
+				}
+				var pageArray = new Array();
+				if(startPage != 1){
+					pageArray.push(1);
+				}
+				for(var i=startPage; i <= endPage; i++){
+					pageArray.push(i);
+				}
+				if(endPage != totalPage){
+					pageArray.push(totalPage);
+				}
+				console.log(pageArray.join(","));
+				var baseURL = window.location.href.replace(/&*page=(([0-9])*)/g,"");
+				var pageObj = $("[content='board-page']");
+				for(i in pageArray){
+					var pg = pageArray[i];
+					var liObj = $("<li></li>");
+					var pageLinkObj = $("<a>"+pg+"</a>");
+					pageLinkObj.attr("href",baseURL+"&page="+pg);
+					if(pg == current){
+						liObj.addClass("active");
+						pageLinkObj.removeAttr("href");
+					}
+					pageLinkObj.appendTo(liObj);
+					liObj.appendTo(pageObj);
+				}
+				if(current != 1){
+					var liObj = $("<li></li>");
+					var pageLinkObj = $("<a>&laquo;</a>");
+					pageLinkObj.attr("href",baseURL+"&page="+(current-1));
+					pageLinkObj.appendTo(liObj);
+					liObj.prependTo(pageObj);
+				}
+				if(current != totalPage){
+					var liObj = $("<li></li>");
+					var pageLinkObj = $("<a>&raquo;</a>");
+					pageLinkObj.attr("href",baseURL+"&page="+(current+1));
+					pageLinkObj.appendTo(liObj);
+					liObj.appendTo(pageObj);
+				}
+			}
+			loadSummernote();
 		</script>
 	</main>
 	</body>

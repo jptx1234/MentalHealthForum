@@ -21,6 +21,12 @@ public class ReplyServiceImpl implements IReplyService {
 		replyDao.save(model);
 		return model.getId();
 	}
+
+	@Override
+	public void delete(Long id) {
+		Reply reply = replyDao.findById(id);
+		reply.setStatus((short) 1);
+	}
 	
 	
 }

@@ -14,7 +14,6 @@ public class PageBean {
 	private int total;//总记录数
 	private List rows;//当前页展示的数据集合
 	
-	@JSONField(serialize=false)
 	public int getCurrentPage() {
 		return currentPage;
 	}
@@ -23,7 +22,7 @@ public class PageBean {
 	}
 	@JSONField(serialize=false)
 	public int getPageSize() {
-		return pageSize;
+		return pageSize; 
 	}
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;

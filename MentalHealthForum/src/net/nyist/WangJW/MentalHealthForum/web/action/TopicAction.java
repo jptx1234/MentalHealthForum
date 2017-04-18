@@ -61,12 +61,13 @@ public class TopicAction extends BaseAction<Topic> {
 			return NONE;
 		}
 		pageBean.setCurrentPage(Math.max(pageBean.getCurrentPage(), 1));
-		pageBean.setPageSize(DEFAULT_PAGE_SIZE);
+		pageBean.setPageSize(DEFAULT_PAGE_SIZE); 
 		DetachedCriteria dc = pageBean.getDetachedCriteria();
+		dc.add(Restrictions.eq("status", (short)0));
 		DetachedCriteria boardDc = dc.createCriteria("board");
 		boardDc.add(Restrictions.eq("id", model.getBoard().getId()));
 		topicService.pageQuery(pageBean);
-		SimplePropertyPreFilter topicFilter = new SimplePropertyPreFilter(Topic.class, "id","user","title","time","repliesCount");
+		SimplePropertyPreFilter topicFilter = new SimplePropertyPreFilter(Topic.class, "id","user","title","time","repliesCount","label");
 		SimplePropertyPreFilter userFilter = new SimplePropertyPreFilter(User.class, "username");
 		responsePageJson(topicFilter,userFilter);
 		
@@ -79,7 +80,7 @@ public class TopicAction extends BaseAction<Topic> {
 			responseResultObject(0, "用户尚未登录");
 			return NONE;
 		}
-		if (user.getStatus() == 1) {
+		if (user.getStatus() == 0) {
 			responseResultObject(0, "用户被封禁，无法发帖");
 			return NONE;
 		}
@@ -103,6 +104,37 @@ public class TopicAction extends BaseAction<Topic> {
 		jsonObject.put("msg", "发帖成功，即将跳转到此帖子页面");
 		jsonObject.put("topicId", topicId);
 		responseJson(jsonObject.toJSONString());
+		
+		return NONE;
+	}
+	
+	public String deleteTopic(){
+		User user = CommonUtils.getLoginUser();
+		if (user == null || !user.getIsAdmin()) {
+			responseResultObject(0, "无权删帖");
+			return NONE;
+		}
+		if (model.getId() == null) {
+			responseResultObject(0, "删帖参数传递失败");
+			return NONE;
+		}
+		try {
+			topicService.delete(model.getId());
+			responseResultObject(1, "主题帖删除成功");
+		} catch (Exception e) {
+			responseResultObject(0, "删帖时出现异常");
+		}
+		
+		return NONE;
+	}
+	
+	public String addLabel(){
+		try {
+			topicService.addLabel(model.getId(),model.getLabel());
+			responseResultObject(1, "成功把帖子设置为："+model.getLabel());
+		} catch (Exception e) {
+			responseResultObject(0, "操作时出现异常");
+		}
 		
 		return NONE;
 	}

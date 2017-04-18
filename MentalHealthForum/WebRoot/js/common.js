@@ -26,3 +26,6 @@ $.ajax({
 	}
 });
 
+$(function(){
+	console.log("document ready");
+});
