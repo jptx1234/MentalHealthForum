@@ -42,6 +42,9 @@ public class TopicAction extends BaseAction<Topic> {
 	
 	public String findTopicById(){
 		Topic topic = topicService.findById(model.getId());
+		if (topic.getAnonymous() == null || topic.getAnonymous()) {
+			topic.setUser(User.AnonymousUser);
+		}
 		SimplePropertyPreFilter filter = new SimplePropertyPreFilter(User.class);
 		Set<String> excludes = filter.getExcludes();
 		excludes.add("replies");
@@ -67,6 +70,12 @@ public class TopicAction extends BaseAction<Topic> {
 		DetachedCriteria boardDc = dc.createCriteria("board");
 		boardDc.add(Restrictions.eq("id", model.getBoard().getId()));
 		topicService.pageQuery(pageBean);
+		for (Object topicObject : pageBean.getRows()) {
+			Topic topic = (Topic)topicObject;
+			if (topic.getAnonymous() == null || topic.getAnonymous()) {
+				topic.setUser(User.AnonymousUser);
+			}
+		}
 		SimplePropertyPreFilter topicFilter = new SimplePropertyPreFilter(Topic.class, "id","user","title","time","repliesCount","label");
 		SimplePropertyPreFilter userFilter = new SimplePropertyPreFilter(User.class, "username");
 		responsePageJson(topicFilter,userFilter);

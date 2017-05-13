@@ -63,9 +63,7 @@ public class Topic implements java.io.Serializable, Comparable<Topic> {
 	}
 
 	public User getUser() {
-		if (anonymous == null || anonymous) {
-			return User.AnonymousUser;
-		}
+		
 		return this.user;
 	}
 

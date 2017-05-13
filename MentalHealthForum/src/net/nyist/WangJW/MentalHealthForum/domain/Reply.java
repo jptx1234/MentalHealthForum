@@ -64,9 +64,7 @@ public class Reply implements java.io.Serializable, Comparable<Reply>{
 	}
 
 	public User getUser() {
-		if (anonymous == null || anonymous) {
-			return User.AnonymousUser;
-		}
+		
 		return this.user;
 	}
 
